@@ -1,0 +1,35 @@
+/* CSS custom properties and global reset */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:               #0a0a0a;
+  --surface:          #111111;
+  --surface-2:        #1a1a1a;
+  --border:           #222222;
+  --border-hi:        #383838;
+  --text:             #e0e0e0;
+  --muted:            #555;
+  --accent-corpus:    #c8a05a;
+  --accent-halftone:  #e03d6a;
+  --accent-ink:       #62b0c8;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Buttons shared across landing and workspace */
+button {
+  font-family: 'DM Mono', monospace;
+}
