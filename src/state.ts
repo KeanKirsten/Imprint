@@ -1,0 +1,70 @@
+import type {
+  Effect,
+  SourceType,
+  InkMode,
+  HalftoneShape,
+  HalftoneColorMode,
+  HalftoneInfluencePoint,
+  CorpusColorMode,
+  CorpusRenderStyle,
+  ScatterPoint,
+} from './types';
+
+// Shared mutable application state — centralised here so modules can import
+// a single object rather than passing values through function arguments.
+
+export const state = {
+  // Which effect is currently active
+  currentEffect: null as Effect | null,
+
+  // The loaded image or video element used as input
+  currentSource: null as HTMLImageElement | HTMLVideoElement | null,
+
+  // Whether the source is an image or a video
+  sourceType: null as SourceType | null,
+
+  // Debounce timer handle for render scheduling
+  renderTimer: null as ReturnType<typeof setTimeout> | null,
+
+  // Whether the landing parallax loop should be running
+  landingActive: true,
+
+  // Ink effect mode
+  inkMode: 'stipple' as InkMode,
+
+  // Halftone dot shape
+  halftoneShape: 'circle' as HalftoneShape,
+
+  // Halftone colour mode
+  halftoneColorMode: 'image' as HalftoneColorMode,
+
+  // Halftone grid angle in degrees
+  halftoneAngle: 0,
+
+  // Whether influence-zone placement mode is active
+  halftoneInfluencePlacing: false,
+
+  // Placed influence zone points
+  halftoneInfluencePoints: [] as HalftoneInfluencePoint[],
+
+  // Counter for unique influence point IDs
+  halftoneInfluenceNextId: 0,
+
+  // Corpus colour mode
+  corpusColorMode: 'image' as CorpusColorMode,
+
+  // Corpus render style
+  corpusRenderStyle: 'mosaic' as CorpusRenderStyle,
+
+  // Whether scatter-point placement mode is active
+  corpusScatterOn: false,
+
+  // Placed scatter points
+  corpusScatterPoints: [] as ScatterPoint[],
+
+  // Counter for generating unique scatter-point IDs
+  corpusScatterNextId: 0,
+
+  // Drag state for moving scatter points
+  corpusDrag: null as { idx: number } | null,
+};
