@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="view-landing">
+
+  <div class="brand-center">
+    <div class="brand-name">Imprint</div>
+    <div class="brand-tagline">Choose an effect<br>to get started.</div>
+    <div class="brand-sub">by MakeReign</div>
+  </div>
+
+  <div class="cards-scatter" id="cards-scatter">
+
+    <div class="effect-card" id="card-corpus" data-effect="corpus" data-depth="1.1" data-rot="-8" onclick="enterEffect('corpus')">
+      <div class="card-canvas-wrap"><canvas id="prev-corpus"></canvas></div>
+      <div class="card-info">
+        <div class="card-title" style="color:var(--accent-corpus)">Corpus</div>
+        <div class="card-desc">Image reconstructed through text and characters</div>
+        <div class="card-cta">Open &rarr;</div>
+      </div>
+    </div>
+
+    <div class="effect-card" id="card-halftone" data-effect="halftone" data-depth="0.75" data-rot="7" onclick="enterEffect('halftone')">
+      <div class="card-canvas-wrap"><canvas id="prev-halftone"></canvas></div>
+      <div class="card-info">
+        <div class="card-title" style="color:var(--accent-halftone)">Halftone</div>
+        <div class="card-desc">Dot particle field mapped to image luminance</div>
+        <div class="card-cta">Open &rarr;</div>
+      </div>
+    </div>
+
+    <div class="effect-card" id="card-ink" data-effect="ink" data-depth="1.35" data-rot="4" onclick="enterEffect('ink')">
+      <div class="card-canvas-wrap"><canvas id="prev-ink"></canvas></div>
+      <div class="card-info">
+        <div class="card-title" style="color:var(--accent-ink)">Bleed &amp; Ink</div>
+        <div class="card-desc">Stipple dots and ink bleed with grain</div>
+        <div class="card-cta">Open &rarr;</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="landing-footer">&copy; MakeReign</div>
+</div>
+
+<!-- WORKSPACE -->
+<div id="view-workspace">
+
+  <header class="ws-header">
+    <button class="ws-back" onclick="goToLanding()">&larr; Back</button>
+    <div class="ws-effect-badge" id="ws-badge">Corpus</div>
+    <div class="ws-spacer"></div>
+    <button class="ws-btn" onclick="triggerUpload()">&uarr; Upload</button>
+    <button class="ws-btn primary" id="export-btn" disabled onclick="exportImg()">&darr; Export PNG</button>
+    <input type="file" id="file-input" accept="image/*,video/*" style="display:none" onchange="onFileInput(this)">
+  </header>
+
+  <div class="ws-body">
+
+    <!-- Corpus sidebar -->
+    <aside class="ws-sidebar" id="sidebar-corpus">
+
+      <div class="s-section">
+        <span class="s-label">Render mode</span>
+        <div class="s-btns">
+          <button class="s-btn active" id="rs-mosaic"     onclick="setRenderStyle('mosaic')">Mosaic</button>
+          <button class="s-btn"        id="rs-threshold"  onclick="setRenderStyle('threshold')">Threshold</button>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Size &amp; detail</span>
+        <div class="s-row">
+          <span class="s-row-lbl">Char size</span>
+          <input type="range" min="4" max="60" value="9" id="c-size"
+            oninput="document.getElementById('c-sz').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="c-sz">9px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Threshold</span>
+          <input type="range" min="0" max="250" value="128" id="c-threshold"
+            oninput="document.getElementById('c-th').textContent=this.value; scheduleRender()">
+          <span class="s-val" id="c-th">128</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Contrast</span>
+          <input type="range" min="50" max="300" value="100" id="c-contrast"
+            oninput="document.getElementById('c-co').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="c-co">100%</span>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Colour</span>
+        <div class="s-btns" style="margin-bottom:12px">
+          <button class="s-btn active" id="cc-image"    onclick="setCorpusColor('image')">Image</button>
+          <button class="s-btn"        id="cc-duotone"  onclick="setCorpusColor('duotone')">Duotone</button>
+          <button class="s-btn"        id="cc-gradient" onclick="setCorpusColor('gradient')">Gradient</button>
+          <button class="s-btn"        id="cc-invert"   onclick="setCorpusColor('invert')">Invert</button>
+        </div>
+        <div id="c-custom-cols" style="display:none">
+          <div class="s-color-row">
+            <span class="s-color-lbl">Colour A</span>
+            <input type="color" id="c-col-a" value="#1a0800" oninput="scheduleRender()">
+          </div>
+          <div class="s-color-row">
+            <span class="s-color-lbl">Colour B</span>
+            <input type="color" id="c-col-b" value="#ff9500" oninput="scheduleRender()">
+          </div>
+        </div>
+        <div class="s-color-row">
+          <span class="s-color-lbl">Background</span>
+          <input type="color" id="c-bg" value="#000000" oninput="scheduleRender()">
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Text source</span>
+        <textarea class="s-textarea" id="c-text"
+          placeholder="Enter any text&hellip;" oninput="scheduleRender()">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 .,;:!?</textarea>
+        <div style="margin-top:10px">
+          <label style="font-size:8.5px; color:var(--muted); display:flex; align-items:center; gap:7px; cursor:pointer; letter-spacing:0.04em;">
+            <input type="checkbox" id="c-skip-spaces" onchange="scheduleRender()"> Skip spaces
+          </label>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Scatter</span>
+        <button class="s-scatter-btn" id="c-scatter-btn" onclick="toggleCorpusScatter()">&oplus; Place points</button>
+        <div class="s-row">
+          <span class="s-row-lbl">Strength</span>
+          <input type="range" min="0" max="300" value="80" id="c-sc-str"
+            oninput="document.getElementById('c-ss').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="c-ss">80px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Radius</span>
+          <input type="range" min="20" max="500" value="150" id="c-sc-rad"
+            oninput="document.getElementById('c-sr').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="c-sr">150px</span>
+        </div>
+        <button class="s-btn" style="width:100%; margin-top:4px" onclick="clearCorpusScatter()">Clear points</button>
+      </div>
+
+    </aside>
+
+    <!-- Halftone sidebar -->
+    <aside class="ws-sidebar" id="sidebar-halftone">
+
+      <div class="s-section">
+        <span class="s-label">Dot settings</span>
+        <div class="s-row">
+          <span class="s-row-lbl">Spacing</span>
+          <input type="range" min="4" max="50" value="14" id="h-spacing"
+            oninput="document.getElementById('h-sp').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="h-sp">14px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Min size</span>
+          <input type="range" min="0" max="20" value="0" step="0.5" id="h-min"
+            oninput="document.getElementById('h-mn').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="h-mn">0px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Max size</span>
+          <input type="range" min="1" max="40" value="7" step="0.5" id="h-max"
+            oninput="document.getElementById('h-mx').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="h-mx">7px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Scatter</span>
+          <input type="range" min="0" max="1" value="0" step="0.05" id="h-scatter"
+            oninput="document.getElementById('h-sc').textContent=parseFloat(this.value).toFixed(2); scheduleRender()">
+          <span class="s-val" id="h-sc">0.00</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Contrast</span>
+          <input type="range" min="50" max="300" value="100" id="h-contrast"
+            oninput="document.getElementById('h-co').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="h-co">100%</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Angle</span>
+          <input type="range" min="0" max="90" value="0" id="h-angle"
+            oninput="document.getElementById('h-an').textContent=this.value+'°'; setHalftoneAngle(parseInt(this.value))">
+          <span class="s-val" id="h-an">0°</span>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Shape</span>
+        <div class="s-btns">
+          <button class="s-btn active" id="hs-circle" onclick="setHalftoneShape('circle')">Circle</button>
+          <button class="s-btn"        id="hs-square" onclick="setHalftoneShape('square')">Square</button>
+          <button class="s-btn"        id="hs-cross"  onclick="setHalftoneShape('cross')">Cross</button>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Colour</span>
+        <div class="s-btns" style="margin-bottom:12px">
+          <button class="s-btn active" id="hc-image"   onclick="setHalftoneColor('image')">Image</button>
+          <button class="s-btn"        id="hc-duotone" onclick="setHalftoneColor('duotone')">Duotone</button>
+          <button class="s-btn"        id="hc-single"  onclick="setHalftoneColor('single')">Single</button>
+          <button class="s-btn"        id="hc-cmyk"    onclick="setHalftoneColor('cmyk')">CMYK</button>
+        </div>
+        <div id="h-col-a-row" class="s-color-row" style="display:none">
+          <span class="s-color-lbl">Colour A</span>
+          <input type="color" id="h-col-a" value="#e03d6a" oninput="scheduleRender()">
+        </div>
+        <div id="h-col-b-row" class="s-color-row" style="display:none">
+          <span class="s-color-lbl">Colour B</span>
+          <input type="color" id="h-col-b" value="#ff8844" oninput="scheduleRender()">
+        </div>
+        <div class="s-color-row">
+          <span class="s-color-lbl">Background</span>
+          <input type="color" id="h-bg" value="#f0eeeb" oninput="scheduleRender()">
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Size influence</span>
+        <button class="s-scatter-btn" id="h-inf-btn" onclick="toggleHalftoneInfluence()">&oplus; Place zones</button>
+        <div class="s-row">
+          <span class="s-row-lbl">Radius</span>
+          <input type="range" min="10" max="300" value="100" id="h-inf-rad"
+            oninput="document.getElementById('h-ir').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="h-ir">100px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Strength</span>
+          <input type="range" min="0" max="100" value="80" id="h-inf-str"
+            oninput="document.getElementById('h-is').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="h-is">80%</span>
+        </div>
+        <button class="s-btn" style="width:100%; margin-top:4px" onclick="clearHalftoneInfluence()">Clear zones</button>
+      </div>
+
+    </aside>
+
+    <!-- Bleed & Ink sidebar -->
+    <aside class="ws-sidebar" id="sidebar-ink">
+
+      <div class="s-section">
+        <span class="s-label">Mode</span>
+        <div class="s-btns">
+          <button class="s-btn active" id="im-stipple" onclick="setInkMode('stipple')">Stipple</button>
+          <button class="s-btn"        id="im-bleed"   onclick="setInkMode('bleed')">Bleed</button>
+        </div>
+      </div>
+
+      <div class="s-section">
+        <span class="s-label">Image</span>
+        <div class="s-row">
+          <span class="s-row-lbl">Threshold</span>
+          <input type="range" min="1" max="255" value="140" id="i-threshold"
+            oninput="document.getElementById('i-th').textContent=this.value; scheduleRender()">
+          <span class="s-val" id="i-th">140</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Contrast</span>
+          <input type="range" min="50" max="300" value="150" id="i-contrast"
+            oninput="document.getElementById('i-co').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="i-co">150%</span>
+        </div>
+      </div>
+
+      <!-- Stipple controls -->
+      <div class="s-section" id="ink-stipple-section">
+        <span class="s-label">Stipple</span>
+        <div class="s-row">
+          <span class="s-row-lbl">Spacing</span>
+          <input type="range" min="2" max="20" value="5" id="i-spacing"
+            oninput="document.getElementById('i-sp').textContent=this.value+'px'; scheduleRender()">
+          <span class="s-val" id="i-sp">5px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Min size</span>
+          <input type="range" min="0" max="5" value="0.2" step="0.1" id="i-minr"
+            oninput="document.getElementById('i-mn').textContent=parseFloat(this.value).toFixed(1)+'px'; scheduleRender()">
+          <span class="s-val" id="i-mn">0.2px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Max size</span>
+          <input type="range" min="0.5" max="12" value="3.5" step="0.1" id="i-maxr"
+            oninput="document.getElementById('i-mx').textContent=parseFloat(this.value).toFixed(1)+'px'; scheduleRender()">
+          <span class="s-val" id="i-mx">3.5px</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Scatter</span>
+          <input type="range" min="0" max="10" value="2" step="0.5" id="i-scatter"
+            oninput="document.getElementById('i-sc').textContent=parseFloat(this.value).toFixed(1); scheduleRender()">
+          <span class="s-val" id="i-sc">2.0</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Grain</span>
+          <input type="range" min="0" max="100" value="20" id="i-sgrain"
+            oninput="document.getElementById('i-sg').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="i-sg">20%</span>
+        </div>
+      </div>
+
+      <!-- Bleed controls -->
+      <div class="s-section" id="ink-bleed-section" style="display:none">
+        <span class="s-label">Bleed</span>
+        <div class="s-row">
+          <span class="s-row-lbl">Amount</span>
+          <input type="range" min="0" max="20" value="6" id="i-bleed"
+            oninput="document.getElementById('i-bl').textContent=this.value; scheduleRender()">
+          <span class="s-val" id="i-bl">6</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Spread</span>
+          <input type="range" min="0" max="100" value="55" id="i-spread"
+            oninput="document.getElementById('i-bsp').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="i-bsp">55%</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Grain</span>
+          <input type="range" min="0" max="100" value="35" id="i-bgrain"
+            oninput="document.getElementById('i-bg').textContent=this.value+'%'; scheduleRender()">
+          <span class="s-val" id="i-bg">35%</span>
+        </div>
+        <div class="s-row">
+          <span class="s-row-lbl">Spatter</span>
+          <input type="range" min="0" max="60" value="12" id="i-spatter"
+            oninput="document.getElementById('i-bst').textContent=this.value; scheduleRender()">
+          <span class="s-val" id="i-bst">12</span>
+        </div>
+      </div>
+
+      <!-- Colours -->
+      <div class="s-section">
+        <span class="s-label">Colour</span>
+        <div class="s-color-row">
+          <span class="s-color-lbl">Ink</span>
+          <input type="color" id="i-ink" value="#0a0a0a" oninput="scheduleRender()">
+        </div>
+        <div class="s-color-row">
+          <span class="s-color-lbl">Paper</span>
+          <input type="color" id="i-paper" value="#f5f4f0" oninput="scheduleRender()">
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Canvas area -->
+    <main class="ws-canvas-area" id="canvas-area">
+      <div class="drop-zone" id="drop-zone" onclick="triggerUpload()">
+        <div class="dz-cross"></div>
+        <div class="dz-text">Drop image here</div>
+        <div class="dz-sub">or click to upload</div>
+      </div>
+      <canvas id="main-canvas"></canvas>
+    </main>
+
+  </div>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
