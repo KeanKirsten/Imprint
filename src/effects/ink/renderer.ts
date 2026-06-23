@@ -18,7 +18,7 @@ function getInkWorker(): Worker {
  * Render the Bleed & Ink effect.
  * Stipple mode runs inline (fast); bleed mode offloads to a Web Worker.
  */
-export function renderBleedInk(): void {
+export function renderBleedInk(): Promise<void> {
   const { dispW, dispH } = getDispSize();
   const threshold = parseInt((document.getElementById('i-threshold') as HTMLInputElement).value);
   const contrast  = parseInt((document.getElementById('i-contrast') as HTMLInputElement).value);
@@ -36,8 +36,9 @@ export function renderBleedInk(): void {
 
   if (state.inkMode === 'stipple') {
     renderStipple(ctx, src, dispW, dispH, threshold, inkHex, paperHex);
+    return Promise.resolve();
   } else {
-    renderBleed(ctx, src, dispW, dispH, threshold, iR, iG, iB, pR, pG, pB);
+    return renderBleed(ctx, src, dispW, dispH, threshold, iR, iG, iB, pR, pG, pB);
   }
 }
 
@@ -101,7 +102,8 @@ function renderStipple(
   }
 }
 
-// Bleed mode: offloads heavy pixel work to the ink worker
+// Bleed mode: offloads heavy pixel work to the ink worker.
+// Resolves once the worker result has been drawn to the canvas.
 function renderBleed(
   ctx: CanvasRenderingContext2D,
   src: Uint8ClampedArray,
@@ -109,25 +111,25 @@ function renderBleed(
   threshold: number,
   iR: number, iG: number, iB: number,
   pR: number, pG: number, pB: number
-): void {
+): Promise<void> {
   const bleedAmt = parseInt((document.getElementById('i-bleed') as HTMLInputElement).value);
   const spread   = parseInt((document.getElementById('i-spread') as HTMLInputElement).value) / 100;
   const grain    = parseInt((document.getElementById('i-bgrain') as HTMLInputElement).value) / 100;
   const spatter  = parseInt((document.getElementById('i-spatter') as HTMLInputElement).value);
 
-  // Copy src into a transferable buffer
   const srcBuffer = src.buffer.slice(0);
-
   const worker = getInkWorker();
 
-  worker.onmessage = (e: MessageEvent<InkWorkerResult>) => {
-    const { pixels, width, height } = e.data;
-    const imageData = new ImageData(new Uint8ClampedArray(pixels.buffer as ArrayBuffer), width, height);
-    ctx.putImageData(imageData, 0, 0);
-  };
-
-  worker.postMessage(
-    { srcBuffer, width: W, height: H, threshold, bleedAmt, spread, grain, spatter, inkR: iR, inkG: iG, inkB: iB, paperR: pR, paperG: pG, paperB: pB },
-    [srcBuffer]
-  );
+  return new Promise<void>(resolve => {
+    worker.onmessage = (e: MessageEvent<InkWorkerResult>) => {
+      const { pixels, width, height } = e.data;
+      const imageData = new ImageData(new Uint8ClampedArray(pixels.buffer as ArrayBuffer), width, height);
+      ctx.putImageData(imageData, 0, 0);
+      resolve();
+    };
+    worker.postMessage(
+      { srcBuffer, width: W, height: H, threshold, bleedAmt, spread, grain, spatter, inkR: iR, inkG: iG, inkB: iB, paperR: pR, paperG: pG, paperB: pB },
+      [srcBuffer]
+    );
+  });
 }

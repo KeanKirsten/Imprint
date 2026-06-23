@@ -38,6 +38,7 @@ export function enterEffect(effect: Effect): void {
     ld.style.opacity = '0';
   });
 
+  window.dispatchEvent(new CustomEvent('imprint:effectchange', { detail: effect }));
   if (state.currentSource) scheduleRender();
 }
 
@@ -73,12 +74,29 @@ export function scheduleRender(): void {
 
 /**
  * Dispatch rendering to the correct effect renderer.
+ * Returns a promise that resolves when the frame is on the canvas
+ * (synchronous effects resolve immediately; ink-bleed awaits its worker).
  */
-function doRender(): void {
-  if (!state.currentSource || !state.currentEffect) return;
-  if (state.currentEffect === 'corpus')   renderCorpus();
-  if (state.currentEffect === 'halftone') renderHalftone();
-  if (state.currentEffect === 'ink')      renderBleedInk();
+function doRender(): Promise<void> {
+  if (!state.currentSource || !state.currentEffect) return Promise.resolve();
+  if (state.currentEffect === 'corpus')   { renderCorpus();   return Promise.resolve(); }
+  if (state.currentEffect === 'halftone') { renderHalftone(); return Promise.resolve(); }
+  if (state.currentEffect === 'ink')      return renderBleedInk();
+  return Promise.resolve();
+}
+
+/**
+ * Immediate render bypassing the debounce — used by animation playback.
+ */
+export function renderNow(): void {
+  void doRender();
+}
+
+/**
+ * Awaitable render used by GIF export — resolves once the canvas is updated.
+ */
+export function renderFrameAsync(): Promise<void> {
+  return doRender();
 }
 
 /**
