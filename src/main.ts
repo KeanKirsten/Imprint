@@ -28,9 +28,6 @@ import {
 // Landing parallax
 import { initLanding } from './landing/index';
 
-// Landing card previews
-import { initPreviews } from './landing/previews';
-
 // Corpus sidebar controls
 import {
   setRenderStyle,
@@ -102,7 +99,6 @@ initWorkspace();
 initUploader();
 initCorpusSidebar();
 initLanding();
-initPreviews();
 initAnimation();
 
 mainCanvas.addEventListener('click', (e: MouseEvent) => {
