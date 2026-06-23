@@ -6,7 +6,7 @@ interface LabelDef { text: string; effect: Effect; tag: string; img: string; }
 // Ordered cycle of labels → effects. Each repeats down the columns.
 const LABELS: LabelDef[] = [
   { text: 'Bleed/Ink', effect: 'ink',      tag: 'INK',      img: '/previews/bleed.png' },
-  { text: 'Particle',  effect: 'halftone', tag: 'HALFTONE', img: '/previews/particle.png' },
+  { text: 'Halftone',  effect: 'halftone', tag: 'HALFTONE', img: '/previews/halftone.png' },
   { text: 'Ascii',     effect: 'corpus',   tag: 'CORPUS',   img: '/previews/ascii.png' },
 ];
 
