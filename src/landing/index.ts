@@ -17,7 +17,7 @@ const ACCENT: Record<Effect, string> = {
 
 // Tunables
 const ROW_H     = 45;   // label line height (px)
-const COLS      = 2;
+const COLS      = 1;
 const SIGMA_PX  = 95;   // vertical reach of the attraction around the cursor (px)
 const PULL      = 0.7;  // how far the nearest label reaches toward the cursor (0–1)
 const STIFFNESS = 0.08; // spring pull toward target (lower = lazier, more "attraction")
