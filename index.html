@@ -61,6 +61,7 @@
     <div class="ws-spacer"></div>
     <button class="ws-btn" onclick="triggerUpload()">&uarr; Upload</button>
     <button class="ws-btn primary" id="export-btn" disabled onclick="exportImg()">&darr; Export PNG</button>
+    <button class="ws-btn" id="anim-toggle" onclick="toggleAnimPanel()">&#9202; Timeline</button>
     <input type="file" id="file-input" accept="image/*,video/*" style="display:none" onchange="onFileInput(this)">
   </header>
 
@@ -373,6 +374,10 @@
     </main>
 
   </div>
+  <section id="anim-panel" class="anim-panel" style="display:none">
+    <div class="anim-transport" id="anim-transport"></div>
+    <div class="anim-tracks" id="anim-tracks"></div>
+  </section>
 </div>
 
 <script type="module" src="/src/main.ts"></script>

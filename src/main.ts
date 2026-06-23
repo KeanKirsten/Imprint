@@ -51,6 +51,9 @@ import { mainCanvas } from './utils/canvas';
 // Ink sidebar controls
 import { setInkMode } from './effects/ink/sidebar';
 
+// Animation system
+import { initAnimation, togglePanel } from './animation/index';
+
 // Expose functions that HTML onclick attributes call
 declare global {
   interface Window {
@@ -71,6 +74,7 @@ declare global {
     toggleHalftoneInfluence:  typeof toggleHalftoneInfluence;
     clearHalftoneInfluence:   typeof clearHalftoneInfluence;
     setInkMode:           typeof setInkMode;
+    toggleAnimPanel:      typeof togglePanel;
   }
 }
 
@@ -91,6 +95,7 @@ window.setHalftoneAngle        = setHalftoneAngle;
 window.toggleHalftoneInfluence = toggleHalftoneInfluence;
 window.clearHalftoneInfluence  = clearHalftoneInfluence;
 window.setInkMode          = setInkMode;
+window.toggleAnimPanel = togglePanel;
 
 // Initialise
 initWorkspace();
@@ -98,6 +103,7 @@ initUploader();
 initCorpusSidebar();
 initLanding();
 initPreviews();
+initAnimation();
 
 mainCanvas.addEventListener('click', (e: MouseEvent) => {
   if (state.currentEffect === 'halftone') onHalftoneCanvasClick(e);
