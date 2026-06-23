@@ -22,10 +22,22 @@ export function renderCorpus(): void {
 
   const { data: pixels } = drawToOff(dispW, dispH, contrast);
 
-  let rawText = (document.getElementById('c-text') as HTMLTextAreaElement).value.trim() ||
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789';
-  let chars = skipSp ? rawText.replace(/\s+/g, '').split('') : rawText.split('');
-  if (!chars.length) chars = ['?'];
+  const charSet = state.corpusCharSet;
+  const PRESETS: Record<'hex' | 'binary' | 'base64', string> = {
+    hex:    '0123456789ABCDEF',
+    binary: '01',
+    base64: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
+  };
+
+  let chars: string[];
+  if (charSet === 'custom') {
+    const rawText = (document.getElementById('c-text') as HTMLTextAreaElement).value.trim() ||
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789';
+    chars = skipSp ? rawText.replace(/\s+/g, '').split('') : rawText.split('');
+    if (!chars.length) chars = ['?'];
+  } else {
+    chars = PRESETS[charSet].split('');
+  }
 
   mainCanvas.width  = dispW;
   mainCanvas.height = dispH;
@@ -65,7 +77,13 @@ export function renderCorpus(): void {
       const g  = pixels[ii + 1];
       const b  = pixels[ii + 2];
       const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      const ch  = chars[li % chars.length];
+      let ch: string;
+      if (charSet === 'custom') {
+        ch = chars[li % chars.length];
+      } else {
+        const idx = Math.min(chars.length - 1, Math.floor(hashNoise(col * 0.01, row * 0.01, 7) * chars.length));
+        ch = chars[idx];
+      }
       li++;
 
       // Calculate scatter displacement from placed points
