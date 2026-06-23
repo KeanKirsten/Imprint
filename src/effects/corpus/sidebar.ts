@@ -1,6 +1,7 @@
 import { state } from '../../state';
 import { scheduleRender } from '../../workspace/index';
 import { mainCanvas } from '../../utils/canvas';
+import type { CorpusCharSet } from '../../types';
 
 /**
  * Switch between mosaic and threshold render styles.
@@ -24,6 +25,20 @@ export function setCorpusColor(mode: 'image' | 'duotone' | 'gradient' | 'invert'
   });
   (document.getElementById('c-custom-cols') as HTMLElement).style.display =
     (mode === 'duotone' || mode === 'gradient') ? 'block' : 'none';
+  scheduleRender();
+}
+
+/**
+ * Switch the corpus character-set mode and show/hide the custom text group.
+ * Exposed on window.
+ */
+export function setCorpusCharSet(mode: CorpusCharSet): void {
+  state.corpusCharSet = mode;
+  (['hex', 'binary', 'base64', 'custom'] as const).forEach(m => {
+    (document.getElementById(`cs-${m}`) as HTMLElement).classList.toggle('active', m === mode);
+  });
+  (document.getElementById('c-custom-text') as HTMLElement).style.display =
+    mode === 'custom' ? 'block' : 'none';
   scheduleRender();
 }
 
