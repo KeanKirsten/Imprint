@@ -35,6 +35,7 @@ import { initPreviews } from './landing/previews';
 import {
   setRenderStyle,
   setCorpusColor,
+  setCorpusCharSet,
   toggleCorpusScatter,
   clearCorpusScatter,
   initCorpusSidebar,
@@ -61,6 +62,7 @@ declare global {
     onFileInput:          typeof onFileInput;
     setRenderStyle:       typeof setRenderStyle;
     setCorpusColor:       typeof setCorpusColor;
+    setCorpusCharSet:     typeof setCorpusCharSet;
     toggleCorpusScatter:  typeof toggleCorpusScatter;
     clearCorpusScatter:   typeof clearCorpusScatter;
     setHalftoneShape:     typeof setHalftoneShape;
@@ -80,6 +82,7 @@ window.triggerUpload       = triggerUpload;
 window.onFileInput         = onFileInput;
 window.setRenderStyle      = setRenderStyle;
 window.setCorpusColor      = setCorpusColor;
+window.setCorpusCharSet    = setCorpusCharSet;
 window.toggleCorpusScatter = toggleCorpusScatter;
 window.clearCorpusScatter  = clearCorpusScatter;
 window.setHalftoneShape    = setHalftoneShape;
