@@ -23,6 +23,10 @@ const PULL      = 0.7;  // how far the nearest label reaches toward the cursor (
 const STIFFNESS = 0.08; // spring pull toward target (lower = lazier, more "attraction")
 const DAMPING   = 0.82; // velocity damping (higher = less bounce)
 
+const MARQUEE_SPEED = 0.25;
+const EMPHASIS      = 0.14;
+const CYCLE_H       = LABELS.length * ROW_H;
+
 interface LabelRec {
   el: HTMLElement;
   col: number;
@@ -32,9 +36,11 @@ interface LabelRec {
   v: number;       // spring velocity
   baseX: number;   // natural centre X (client coords, at rest)
   baseY: number;   // natural centre Y (client coords; unaffected by translateX)
+  s: number;       // current scale, spring toward targetScale
 }
 
 let labels: LabelRec[] = [];
+let scrollOffset = 0;
 let hovered: { col: number; row: number } | null = null;
 let pointerActive = false;
 let pointerX = 0;
@@ -75,7 +81,7 @@ function buildColumns(columnsEl: HTMLElement): void {
       const el = document.createElement('div');
       el.className = 'lp-label';
       el.textContent = def.text;
-      const rec: LabelRec = { el, col, row, def, x: 0, v: 0, baseX: 0, baseY: 0 };
+      const rec: LabelRec = { el, col, row, def, x: 0, v: 0, baseX: 0, baseY: 0, s: 1 };
       el.addEventListener('click', () => enterEffect(rec.def.effect));
       colEl.appendChild(el);
       labels.push(rec);
