@@ -98,7 +98,10 @@ function buildColumns(columnsEl: HTMLElement): void {
       el.className = 'lp-label';
       el.textContent = def.text;
       const rec: LabelRec = { el, col, row, def, x: 0, v: 0, baseX: 0, baseY: 0, s: 1 };
-      el.addEventListener('click', () => enterEffect(rec.def.effect));
+      el.addEventListener('click', () => {
+        rec.el.classList.add('leaving');
+        enterEffect(rec.def.effect);
+      });
       colEl.appendChild(el);
       labels.push(rec);
     }
