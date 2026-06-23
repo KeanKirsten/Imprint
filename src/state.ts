@@ -10,6 +10,7 @@ import type {
   CorpusCharSet,
   ScatterPoint,
 } from './types';
+import type { EffectAnimation } from './animation/types';
 
 // Shared mutable application state — centralised here so modules can import
 // a single object rather than passing values through function arguments.
@@ -71,4 +72,17 @@ export const state = {
 
   // Drag state for moving scatter points
   corpusDrag: null as { idx: number } | null,
+
+  // Animation per effect, keyed by effect name
+  animations: {
+    corpus:   { durationMs: 3000, fps: 30, sliders: [] },
+    halftone: { durationMs: 3000, fps: 30, sliders: [] },
+    ink:      { durationMs: 3000, fps: 30, sliders: [] },
+  } as Record<'corpus' | 'halftone' | 'ink', EffectAnimation>,
+
+  // Whether the timeline panel is open
+  animPanelOpen: false,
+
+  // Whether preview playback is running
+  animPlaying: false,
 };
