@@ -28,6 +28,7 @@
   padding: 40px;
   color: #0e0e0f;
   z-index: 20;
+  pointer-events: none; /* let hovers pass through to the label columns beneath */
 }
 .lp-wordmark {
   font-family: 'Azurio Trial', sans-serif;
