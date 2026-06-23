@@ -8,16 +8,6 @@
   transition: opacity 0.5s ease;
 }
 
-/* Cursor-following radial glow */
-.lp-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle 620px at var(--mx, 50%) var(--my, 40%), var(--glow-tint, rgba(255,255,255,0.5)), transparent 70%);
-  transition: background 0.4s ease;
-  z-index: 1;
-}
-
 /* Subtle noise grain overlay */
 .lp-grain {
   position: absolute;

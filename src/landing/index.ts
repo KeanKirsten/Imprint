@@ -15,11 +15,6 @@ const ACCENT: Record<Effect, string> = {
   ink: '#62b0c8', halftone: '#e03d6a', corpus: '#c8a05a',
 };
 
-const GLOW_ACCENT: Record<Effect, string> = {
-  ink:      'rgba(98,176,200,0.10)',
-  halftone: 'rgba(224,61,106,0.10)',
-  corpus:   'rgba(200,160,90,0.10)',
-};
 
 // Tunables
 const ROW_H     = 45;   // label line height (px)
@@ -47,7 +42,6 @@ interface LabelRec {
 
 let labels: LabelRec[] = [];
 let colEls: HTMLElement[] = [];
-let landingEl: HTMLElement | null = null;
 let scrollOffset = 0;
 let hovered: { col: number; row: number } | null = null;
 let pointerActive = false;
@@ -58,12 +52,6 @@ let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 let loopStarted = false;
 
 export function initLanding(): void {
-  landingEl = document.getElementById('view-landing') as HTMLElement;
-  landingEl.addEventListener('mousemove', (e: MouseEvent) => {
-    landingEl!.style.setProperty('--mx', `${e.clientX}px`);
-    landingEl!.style.setProperty('--my', `${e.clientY}px`);
-  });
-
   const columnsEl = document.getElementById('lp-columns') as HTMLElement;
   buildColumns(columnsEl);
 
@@ -143,7 +131,6 @@ function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLEleme
     hovered = { col, row };
     for (const l of labels) l.el.classList.toggle('active', l === rec);
     showCard(rec);
-    landingEl?.style.setProperty('--glow-tint', GLOW_ACCENT[rec.def.effect]);
   });
   colEl.addEventListener('mouseleave', () => {
     pointerActive = false;
@@ -151,7 +138,6 @@ function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLEleme
     columnsEl.classList.remove('hovering');
     for (const l of labels) l.el.classList.remove('active');
     hideCard();
-    landingEl?.style.setProperty('--glow-tint', 'rgba(255,255,255,0.5)');
   });
 }
 
