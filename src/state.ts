@@ -7,6 +7,7 @@ import type {
   HalftoneInfluencePoint,
   CorpusColorMode,
   CorpusRenderStyle,
+  CorpusCharSet,
   ScatterPoint,
 } from './types';
 
@@ -55,6 +56,9 @@ export const state = {
 
   // Corpus render style
   corpusRenderStyle: 'mosaic' as CorpusRenderStyle,
+
+  // Corpus character set source
+  corpusCharSet: 'hex' as CorpusCharSet,
 
   // Whether scatter-point placement mode is active
   corpusScatterOn: false,

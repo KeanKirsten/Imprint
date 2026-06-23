@@ -19,6 +19,9 @@ export type CorpusColorMode = 'image' | 'duotone' | 'gradient' | 'invert';
 // Corpus render style
 export type CorpusRenderStyle = 'mosaic' | 'threshold';
 
+// Corpus character set
+export type CorpusCharSet = 'hex' | 'binary' | 'base64' | 'custom';
+
 // A scatter point placed on the canvas by the user
 export interface ScatterPoint {
   x: number;
