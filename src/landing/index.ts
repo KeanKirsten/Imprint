@@ -70,30 +70,36 @@ function buildColumns(columnsEl: HTMLElement): void {
       el.className = 'lp-label';
       el.textContent = def.text;
       const rec: LabelRec = { el, col, row, def, x: 0, v: 0 };
-      attachHandlers(rec, columnsEl);
+      el.addEventListener('click', () => enterEffect(rec.def.effect));
       colEl.appendChild(el);
       labels.push(rec);
     }
+    attachColumnHover(colEl, col, columnsEl);
     columnsEl.appendChild(colEl);
   }
 }
 
-function attachHandlers(rec: LabelRec, columnsEl: HTMLElement): void {
-  rec.el.addEventListener('mouseenter', () => {
-    hovered = { col: rec.col, row: rec.row };
+// Detect the hovered label by vertical position within the column, not by the
+// labels' own hit-boxes — those slide sideways on hover, which would otherwise
+// cause enter/leave churn and jittery motion. Y is unaffected by translateX.
+function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLElement): void {
+  colEl.addEventListener('mousemove', (e: MouseEvent) => {
+    const rect = colEl.getBoundingClientRect();
+    const row  = Math.floor((e.clientY - rect.top) / ROW_H);
+    const rec  = labels.find(l => l.col === col && l.row === row);
+    if (!rec) return;
+    if (hovered && hovered.col === col && hovered.row === row) return;
+    hovered = { col, row };
     columnsEl.classList.add('hovering');
     for (const l of labels) l.el.classList.toggle('active', l === rec);
     showCard(rec);
   });
-  rec.el.addEventListener('mouseleave', () => {
-    if (hovered && hovered.col === rec.col && hovered.row === rec.row) {
-      hovered = null;
-      columnsEl.classList.remove('hovering');
-      for (const l of labels) l.el.classList.remove('active');
-      hideCard();
-    }
+  colEl.addEventListener('mouseleave', () => {
+    hovered = null;
+    columnsEl.classList.remove('hovering');
+    for (const l of labels) l.el.classList.remove('active');
+    hideCard();
   });
-  rec.el.addEventListener('click', () => enterEffect(rec.def.effect));
 }
 
 function springLoop(): void {
@@ -130,12 +136,14 @@ function showCard(rec: LabelRec): void {
   probe.onerror = () => { imgEl.style.backgroundColor = ACCENT[rec.def.effect]; };
   probe.src = rec.def.img;
 
-  // Position beside the label, clamped to the viewport.
-  const r = rec.el.getBoundingClientRect();
+  // Anchor horizontally to the stable column edge and vertically to the label's
+  // unmoving Y, so the card doesn't drift as the label springs sideways.
+  const colRect   = (rec.el.parentElement as HTMLElement).getBoundingClientRect();
+  const labelRect = rec.el.getBoundingClientRect();
   const cardW = 168;
   const cardH = 168 + 44;
-  let left = rec.col === 0 ? r.right + 16 : r.left - cardW - 16;
-  let top  = r.top + r.height / 2 - cardH / 2;
+  let left = rec.col === 0 ? colRect.right + 16 : colRect.left - cardW - 16;
+  let top  = labelRect.top + labelRect.height / 2 - cardH / 2;
   left = Math.max(12, Math.min(window.innerWidth  - cardW - 12, left));
   top  = Math.max(12, Math.min(window.innerHeight - cardH - 12, top));
   card.style.left = `${left}px`;
