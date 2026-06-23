@@ -18,22 +18,28 @@ const ACCENT: Record<Effect, string> = {
 // Tunables
 const ROW_H     = 45;   // label line height (px)
 const COLS      = 2;
-const MAX_DISP  = 90;   // max horizontal push at the hovered row (px)
-const SIGMA     = 2.2;  // gaussian falloff width (rows)
-const STIFFNESS = 0.14; // spring pull toward target
-const DAMPING   = 0.72; // velocity damping
+const SIGMA_PX  = 95;   // vertical reach of the attraction around the cursor (px)
+const PULL      = 0.7;  // how far the nearest label reaches toward the cursor (0–1)
+const STIFFNESS = 0.08; // spring pull toward target (lower = lazier, more "attraction")
+const DAMPING   = 0.82; // velocity damping (higher = less bounce)
 
 interface LabelRec {
   el: HTMLElement;
   col: number;
   row: number;
   def: LabelDef;
-  x: number;
-  v: number;
+  x: number;       // current spring offset
+  v: number;       // spring velocity
+  baseX: number;   // natural centre X (client coords, at rest)
+  baseY: number;   // natural centre Y (client coords; unaffected by translateX)
 }
 
 let labels: LabelRec[] = [];
 let hovered: { col: number; row: number } | null = null;
+let pointerActive = false;
+let pointerX = 0;
+let pointerY = 0;
+let activeCol = 0;
 let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 let loopStarted = false;
 
@@ -69,13 +75,25 @@ function buildColumns(columnsEl: HTMLElement): void {
       const el = document.createElement('div');
       el.className = 'lp-label';
       el.textContent = def.text;
-      const rec: LabelRec = { el, col, row, def, x: 0, v: 0 };
+      const rec: LabelRec = { el, col, row, def, x: 0, v: 0, baseX: 0, baseY: 0 };
       el.addEventListener('click', () => enterEffect(rec.def.effect));
       colEl.appendChild(el);
       labels.push(rec);
     }
     attachColumnHover(colEl, col, columnsEl);
     columnsEl.appendChild(colEl);
+  }
+
+  // Capture each label's natural centre once layout has settled.
+  requestAnimationFrame(measureBases);
+}
+
+// Record the at-rest centre of every label (used as the spring's anchor).
+function measureBases(): void {
+  for (const l of labels) {
+    const r = l.el.getBoundingClientRect();
+    l.baseX = r.left + r.width / 2 - l.x; // subtract current offset to get the true base
+    l.baseY = r.top + r.height / 2;
   }
 }
 
@@ -84,17 +102,25 @@ function buildColumns(columnsEl: HTMLElement): void {
 // cause enter/leave churn and jittery motion. Y is unaffected by translateX.
 function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLElement): void {
   colEl.addEventListener('mousemove', (e: MouseEvent) => {
+    // Continuous pointer position drives the magnetic pull in the spring loop.
+    pointerActive = true;
+    activeCol = col;
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+
+    // Update the preview card / active label by the nearest row.
     const rect = colEl.getBoundingClientRect();
     const row  = Math.floor((e.clientY - rect.top) / ROW_H);
     const rec  = labels.find(l => l.col === col && l.row === row);
     if (!rec) return;
+    columnsEl.classList.add('hovering');
     if (hovered && hovered.col === col && hovered.row === row) return;
     hovered = { col, row };
-    columnsEl.classList.add('hovering');
     for (const l of labels) l.el.classList.toggle('active', l === rec);
     showCard(rec);
   });
   colEl.addEventListener('mouseleave', () => {
+    pointerActive = false;
     hovered = null;
     columnsEl.classList.remove('hovering');
     for (const l of labels) l.el.classList.remove('active');
@@ -105,11 +131,12 @@ function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLEleme
 function springLoop(): void {
   for (const l of labels) {
     let target = 0;
-    if (hovered && hovered.col === l.col) {
-      const d = l.row - hovered.row;
-      const falloff = Math.exp(-(d * d) / (2 * SIGMA * SIGMA));
-      const dir = 1; // both columns push the same way (to the right); use -1 for left
-      target = dir * MAX_DISP * falloff;
+    if (pointerActive && l.col === activeCol) {
+      // Vertical nearness to the cursor → how strongly this label reaches.
+      const dy = pointerY - l.baseY;
+      const falloff = Math.exp(-(dy * dy) / (2 * SIGMA_PX * SIGMA_PX));
+      // Pull horizontally toward the cursor's X, scaled by nearness.
+      target = (pointerX - l.baseX) * falloff * PULL;
     }
     l.v += (target - l.x) * STIFFNESS;
     l.v *= DAMPING;
