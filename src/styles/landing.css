@@ -83,6 +83,7 @@
   white-space: nowrap;
   text-align: left;
   will-change: transform;
+  transform-origin: left center;
   transition: opacity 0.25s ease;
 }
 .lp-columns.hovering .lp-label:not(.active) { opacity: 0.55; }
@@ -141,6 +142,13 @@
   33%  { transform: scale(1.04) translate(-3px, -2px); }
   66%  { transform: scale(1.07) translate(2px, -4px); }
   100% { transform: scale(1.08) translate(-1px, 2px); }
+}
+
+/* Click → workspace: the clicked word pops as the landing fades */
+.lp-label.leaving {
+  transform: scale(1.4) !important;
+  opacity: 0 !important;
+  transition: transform 0.35s ease, opacity 0.35s ease !important;
 }
 
 .lp-card::after {
