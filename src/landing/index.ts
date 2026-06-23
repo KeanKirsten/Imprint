@@ -163,17 +163,25 @@ function springLoop(): void {
   }
   for (const l of labels) {
     let target = 0;
+    let targetScale = 1;
+
     if (pointerActive && l.col === activeCol) {
-      // Vertical nearness to the cursor → how strongly this label reaches.
-      const dy = pointerY - l.baseY;
+      const liveY = l.baseY - (scrollOffset % CYCLE_H);
+      const dy = pointerY - liveY;
       const falloff = Math.exp(-(dy * dy) / (2 * SIGMA_PX * SIGMA_PX));
-      // Pull horizontally toward the cursor's X, scaled by nearness.
       target = (pointerX - l.baseX) * falloff * PULL;
+      targetScale = 1 + EMPHASIS * falloff;
     }
+
+    // Horizontal spring
     l.v += (target - l.x) * STIFFNESS;
     l.v *= DAMPING;
     l.x += l.v;
-    l.el.style.transform = `translateX(${l.x.toFixed(2)}px)`;
+
+    // Scale spring
+    l.s += (targetScale - l.s) * 0.15;
+
+    l.el.style.transform = `translateX(${l.x.toFixed(2)}px) scale(${l.s.toFixed(4)})`;
   }
   requestAnimationFrame(springLoop);
 }
