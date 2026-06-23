@@ -1,5 +1,18 @@
 /* CSS custom properties and global reset */
 
+@font-face {
+  font-family: 'Lay Grotesk Trial';
+  src: url('/fonts/LayGrotesk-Trial-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Azurio Trial';
+  src: url('/fonts/AzurioTrial-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
