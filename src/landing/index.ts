@@ -46,6 +46,7 @@ interface LabelRec {
 }
 
 let labels: LabelRec[] = [];
+let colEls: HTMLElement[] = [];
 let landingEl: HTMLElement | null = null;
 let scrollOffset = 0;
 let hovered: { col: number; row: number } | null = null;
@@ -81,14 +82,16 @@ function buildColumns(columnsEl: HTMLElement): void {
   columnsEl.innerHTML = '';
   columnsEl.classList.remove('hovering');
   labels = [];
+  colEls = [];
   hovered = null;
   hideCard();
 
-  const rowCount = Math.ceil(window.innerHeight / ROW_H) + 4;
+  const rowCount = Math.ceil(window.innerHeight / ROW_H) + LABELS.length * 2;
 
   for (let col = 0; col < COLS; col++) {
     const colEl = document.createElement('div');
     colEl.className = 'lp-col';
+    colEls.push(colEl);
     for (let row = 0; row < rowCount; row++) {
       const def = LABELS[(row + col) % LABELS.length]; // per-column offset for a staggered feel
       const el = document.createElement('div');
@@ -150,6 +153,14 @@ function attachColumnHover(colEl: HTMLElement, col: number, columnsEl: HTMLEleme
 }
 
 function springLoop(): void {
+  // Marquee: advance scroll offset unless pointer is active
+  if (!pointerActive) {
+    scrollOffset += MARQUEE_SPEED;
+  }
+  const yShift = -(scrollOffset % CYCLE_H);
+  for (const colEl of colEls) {
+    colEl.style.transform = `translateY(${yShift.toFixed(2)}px)`;
+  }
   for (const l of labels) {
     let target = 0;
     if (pointerActive && l.col === activeCol) {
