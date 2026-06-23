@@ -124,13 +124,21 @@
       </div>
 
       <div class="s-section">
-        <span class="s-label">Text source</span>
-        <textarea class="s-textarea" id="c-text"
-          placeholder="Enter any text&hellip;" oninput="scheduleRender()">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 .,;:!?</textarea>
-        <div style="margin-top:10px">
-          <label style="font-size:8.5px; color:var(--muted); display:flex; align-items:center; gap:7px; cursor:pointer; letter-spacing:0.04em;">
-            <input type="checkbox" id="c-skip-spaces" onchange="scheduleRender()"> Skip spaces
-          </label>
+        <span class="s-label">Character set</span>
+        <div class="s-btns" style="margin-bottom:10px">
+          <button class="s-btn active" id="cs-hex"    onclick="setCorpusCharSet('hex')">Hex</button>
+          <button class="s-btn"        id="cs-binary" onclick="setCorpusCharSet('binary')">Binary</button>
+          <button class="s-btn"        id="cs-base64" onclick="setCorpusCharSet('base64')">Base64</button>
+          <button class="s-btn"        id="cs-custom" onclick="setCorpusCharSet('custom')">Custom</button>
+        </div>
+        <div id="c-custom-text" style="display:none">
+          <textarea class="s-textarea" id="c-text"
+            placeholder="Enter any text&hellip;" oninput="scheduleRender()">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 .,;:!?</textarea>
+          <div style="margin-top:10px">
+            <label style="font-size:8.5px; color:var(--muted); display:flex; align-items:center; gap:7px; cursor:pointer; letter-spacing:0.04em;">
+              <input type="checkbox" id="c-skip-spaces" onchange="scheduleRender()"> Skip spaces
+            </label>
+          </div>
         </div>
       </div>
 
