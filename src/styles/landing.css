@@ -70,7 +70,7 @@
   color: #0e0e0f;
   cursor: pointer;
   white-space: nowrap;
-  text-align: center;
+  text-align: left;
   will-change: transform;
   transition: opacity 0.25s ease;
 }
