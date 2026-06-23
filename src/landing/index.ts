@@ -102,7 +102,7 @@ function springLoop(): void {
     if (hovered && hovered.col === l.col) {
       const d = l.row - hovered.row;
       const falloff = Math.exp(-(d * d) / (2 * SIGMA * SIGMA));
-      const dir = l.col === 0 ? 1 : -1; // push inward, toward centre
+      const dir = 1; // both columns push the same way (to the right); use -1 for left
       target = dir * MAX_DISP * falloff;
     }
     l.v += (target - l.x) * STIFFNESS;
