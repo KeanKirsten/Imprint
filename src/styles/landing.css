@@ -108,6 +108,7 @@
   background-size: cover;
   background-position: center;
   background-color: #1a1a1a;
+  animation: kenBurns 8s ease-in-out infinite alternate;
 }
 .lp-card-bottom {
   display: flex;
@@ -133,3 +134,23 @@
   color: #fff;
 }
 .lp-card-more { color: #fff; font-size: 12px; line-height: 1; flex-shrink: 0; }
+
+/* Ken Burns slow drift on card thumbnail */
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translate(0px, 0px); }
+  33%  { transform: scale(1.04) translate(-3px, -2px); }
+  66%  { transform: scale(1.07) translate(2px, -4px); }
+  100% { transform: scale(1.08) translate(-1px, 2px); }
+}
+
+.lp-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  border-radius: 5px;
+  z-index: 5;
+}
