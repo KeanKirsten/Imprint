@@ -1,87 +1,149 @@
-import { state } from '../state';
+import { enterEffect } from '../workspace/index';
+import type { Effect } from '../types';
 
-// Base positions for each card: [left%, top%]
-export const CARD_BASES = [
-  { left: 14, top: 16 },  // Corpus: upper-left
-  { left: 66, top: 10 },  // Halftone: upper-right
-  { left: 40, top: 62 },  // Ink: lower-centre
+interface LabelDef { text: string; effect: Effect; tag: string; img: string; }
+
+// Ordered cycle of labels → effects. Each repeats down the columns.
+const LABELS: LabelDef[] = [
+  { text: 'Bleed/Ink', effect: 'ink',      tag: 'INK',      img: '/previews/bleed.png' },
+  { text: 'Particle',  effect: 'halftone', tag: 'HALFTONE', img: '/previews/particle.png' },
+  { text: 'Ascii',     effect: 'corpus',   tag: 'CORPUS',   img: '/previews/ascii.png' },
 ];
 
-// Per-card animated and target offsets
-const cardCx: number[] = [];
-const cardCy: number[] = [];
-const cardTx: number[] = [];
-const cardTy: number[] = [];
+// Fallback colour per effect if a thumbnail is missing.
+const ACCENT: Record<Effect, string> = {
+  ink: '#62b0c8', halftone: '#e03d6a', corpus: '#c8a05a',
+};
 
-let mouseX = window.innerWidth  / 2;
-let mouseY = window.innerHeight / 2;
+// Tunables
+const ROW_H     = 45;   // label line height (px)
+const COLS      = 2;
+const MAX_DISP  = 90;   // max horizontal push at the hovered row (px)
+const SIGMA     = 2.2;  // gaussian falloff width (rows)
+const STIFFNESS = 0.14; // spring pull toward target
+const DAMPING   = 0.72; // velocity damping
 
-/**
- * Initialise landing parallax. Positions cards at their base coordinates,
- * attaches mouse and hover listeners, and starts the RAF loop.
- */
+interface LabelRec {
+  el: HTMLElement;
+  col: number;
+  row: number;
+  def: LabelDef;
+  x: number;
+  v: number;
+}
+
+let labels: LabelRec[] = [];
+let hovered: { col: number; row: number } | null = null;
+let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+let loopStarted = false;
+
 export function initLanding(): void {
-  const scatterCards = Array.from(
-    document.querySelectorAll<HTMLElement>('.effect-card')
-  );
+  const columnsEl = document.getElementById('lp-columns') as HTMLElement;
+  buildColumns(columnsEl);
 
-  scatterCards.forEach((card, i) => {
-    const b = CARD_BASES[i];
-    card.style.left = `${b.left}%`;
-    card.style.top  = `${b.top}%`;
-    card.style.transform = `translate(-50%,-50%) rotate(${card.dataset['rot'] ?? 0}deg)`;
-    cardCx[i] = cardCy[i] = cardTx[i] = cardTy[i] = 0;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => buildColumns(columnsEl), 200);
   });
 
-  document.addEventListener('mousemove', (e: MouseEvent) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
+  if (!loopStarted) {
+    loopStarted = true;
+    requestAnimationFrame(springLoop);
+  }
+}
 
-  // Dim non-hovered cards when one is hovered
-  scatterCards.forEach((card, i) => {
-    card.addEventListener('mouseenter', () => {
-      scatterCards.forEach((c, j) => {
-        c.style.transition = 'border-color 0.3s, box-shadow 0.3s, opacity 0.3s';
-        c.style.opacity = j === i ? '1' : '0.45';
-      });
-    });
-    card.addEventListener('mouseleave', () => {
-      scatterCards.forEach(c => {
-        c.style.transition = 'border-color 0.3s, box-shadow 0.3s, opacity 0.3s';
-        c.style.opacity = '1';
-      });
-    });
-  });
+function buildColumns(columnsEl: HTMLElement): void {
+  columnsEl.innerHTML = '';
+  columnsEl.classList.remove('hovering');
+  labels = [];
+  hovered = null;
+  hideCard();
 
-  (function parallaxLoop(): void {
-    if (state.landingActive) {
-      const cx  = window.innerWidth  / 2;
-      const cy  = window.innerHeight / 2;
-      const ndx = (mouseX - cx) / cx;
-      const ndy = (mouseY - cy) / cy;
+  const rowCount = Math.ceil(window.innerHeight / ROW_H) + 4;
 
-      scatterCards.forEach((card, i) => {
-        const depth = parseFloat(card.dataset['depth'] ?? '1');
-        const rot   = parseFloat(card.dataset['rot']   ?? '0');
-
-        cardTx[i] = ndx * 38 * depth;
-        cardTy[i] = ndy * 28 * depth;
-
-        // Lerp toward target
-        cardCx[i] += (cardTx[i] - cardCx[i]) * 0.07;
-        cardCy[i] += (cardTy[i] - cardCy[i]) * 0.07;
-
-        // Subtle 3-D tilt toward cursor
-        const tiltX = -ndy * 5 * depth;
-        const tiltY =  ndx * 5 * depth;
-
-        card.style.transform =
-          `translate(calc(-50% + ${cardCx[i].toFixed(2)}px), calc(-50% + ${cardCy[i].toFixed(2)}px))` +
-          ` rotate(${rot}deg) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
-      });
+  for (let col = 0; col < COLS; col++) {
+    const colEl = document.createElement('div');
+    colEl.className = 'lp-col';
+    for (let row = 0; row < rowCount; row++) {
+      const def = LABELS[(row + col) % LABELS.length]; // per-column offset for a staggered feel
+      const el = document.createElement('div');
+      el.className = 'lp-label';
+      el.textContent = def.text;
+      const rec: LabelRec = { el, col, row, def, x: 0, v: 0 };
+      attachHandlers(rec, columnsEl);
+      colEl.appendChild(el);
+      labels.push(rec);
     }
+    columnsEl.appendChild(colEl);
+  }
+}
 
-    requestAnimationFrame(parallaxLoop);
-  })();
+function attachHandlers(rec: LabelRec, columnsEl: HTMLElement): void {
+  rec.el.addEventListener('mouseenter', () => {
+    hovered = { col: rec.col, row: rec.row };
+    columnsEl.classList.add('hovering');
+    for (const l of labels) l.el.classList.toggle('active', l === rec);
+    showCard(rec);
+  });
+  rec.el.addEventListener('mouseleave', () => {
+    if (hovered && hovered.col === rec.col && hovered.row === rec.row) {
+      hovered = null;
+      columnsEl.classList.remove('hovering');
+      for (const l of labels) l.el.classList.remove('active');
+      hideCard();
+    }
+  });
+  rec.el.addEventListener('click', () => enterEffect(rec.def.effect));
+}
+
+function springLoop(): void {
+  for (const l of labels) {
+    let target = 0;
+    if (hovered && hovered.col === l.col) {
+      const d = l.row - hovered.row;
+      const falloff = Math.exp(-(d * d) / (2 * SIGMA * SIGMA));
+      const dir = l.col === 0 ? -1 : 1; // push outward, away from centre
+      target = dir * MAX_DISP * falloff;
+    }
+    l.v += (target - l.x) * STIFFNESS;
+    l.v *= DAMPING;
+    l.x += l.v;
+    l.el.style.transform = `translateX(${l.x.toFixed(2)}px)`;
+  }
+  requestAnimationFrame(springLoop);
+}
+
+function showCard(rec: LabelRec): void {
+  const card  = document.getElementById('lp-card')      as HTMLElement;
+  const imgEl = document.getElementById('lp-card-img')  as HTMLElement;
+  const tagEl = document.getElementById('lp-card-tag')  as HTMLElement;
+  const nameEl = document.getElementById('lp-card-name') as HTMLElement;
+
+  tagEl.textContent  = rec.def.tag;
+  nameEl.textContent = rec.def.text;
+
+  // Load thumbnail; fall back to a flat accent fill if the file is missing.
+  imgEl.style.backgroundImage = '';
+  imgEl.style.backgroundColor = '#1a1a1a';
+  const probe = new Image();
+  probe.onload  = () => { imgEl.style.backgroundImage = `url('${rec.def.img}')`; };
+  probe.onerror = () => { imgEl.style.backgroundColor = ACCENT[rec.def.effect]; };
+  probe.src = rec.def.img;
+
+  // Position beside the label, clamped to the viewport.
+  const r = rec.el.getBoundingClientRect();
+  const cardW = 168;
+  const cardH = 168 + 44;
+  let left = rec.col === 0 ? r.right + 16 : r.left - cardW - 16;
+  let top  = r.top + r.height / 2 - cardH / 2;
+  left = Math.max(12, Math.min(window.innerWidth  - cardW - 12, left));
+  top  = Math.max(12, Math.min(window.innerHeight - cardH - 12, top));
+  card.style.left = `${left}px`;
+  card.style.top  = `${top}px`;
+  card.classList.add('visible');
+}
+
+function hideCard(): void {
+  const card = document.getElementById('lp-card');
+  card?.classList.remove('visible');
 }
