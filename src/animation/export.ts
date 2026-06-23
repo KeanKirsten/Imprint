@@ -39,5 +39,5 @@ export async function exportGif(
   a.href = url;
   a.download = `imprint-${effect}-anim-${Date.now()}.gif`;
   a.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
 }

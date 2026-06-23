@@ -38,6 +38,7 @@ export function play(effect: Effect): void {
 
   const tick = (now: number): void => {
     if (!state.animPlaying) return;
+    if (state.currentEffect !== effect) { pause(); return; }
     const elapsed = (now - startTime) % anim.durationMs;
     applyAnimationAtProgress(effect, elapsed / anim.durationMs);
     rafId = requestAnimationFrame(tick);
