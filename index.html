@@ -12,44 +12,26 @@
 <!-- LANDING -->
 <div id="view-landing">
 
-  <div class="brand-center">
-    <div class="brand-name">Imprint</div>
-    <div class="brand-tagline">Choose an effect<br>to get started.</div>
-    <div class="brand-sub">by MakeReign</div>
+  <div class="lp-grain" aria-hidden="true"></div>
+
+  <header class="lp-header">
+    <div class="lp-wordmark">Imprint</div>
+    <div class="lp-meta"><span>Visual Effects Tool</span><span>2025</span></div>
+  </header>
+
+  <div class="lp-columns" id="lp-columns"></div>
+
+  <div class="lp-card" id="lp-card" aria-hidden="true">
+    <div class="lp-card-img" id="lp-card-img"></div>
+    <div class="lp-card-bottom">
+      <div class="lp-card-text">
+        <span class="lp-card-tag"  id="lp-card-tag"></span>
+        <span class="lp-card-name" id="lp-card-name"></span>
+      </div>
+      <span class="lp-card-more">···</span>
+    </div>
   </div>
 
-  <div class="cards-scatter" id="cards-scatter">
-
-    <div class="effect-card" id="card-corpus" data-effect="corpus" data-depth="1.1" data-rot="-8" onclick="enterEffect('corpus')">
-      <div class="card-canvas-wrap"><canvas id="prev-corpus"></canvas></div>
-      <div class="card-info">
-        <div class="card-title" style="color:var(--accent-corpus)">Corpus</div>
-        <div class="card-desc">Image reconstructed through text and characters</div>
-        <div class="card-cta">Open &rarr;</div>
-      </div>
-    </div>
-
-    <div class="effect-card" id="card-halftone" data-effect="halftone" data-depth="0.75" data-rot="7" onclick="enterEffect('halftone')">
-      <div class="card-canvas-wrap"><canvas id="prev-halftone"></canvas></div>
-      <div class="card-info">
-        <div class="card-title" style="color:var(--accent-halftone)">Halftone</div>
-        <div class="card-desc">Dot particle field mapped to image luminance</div>
-        <div class="card-cta">Open &rarr;</div>
-      </div>
-    </div>
-
-    <div class="effect-card" id="card-ink" data-effect="ink" data-depth="1.35" data-rot="4" onclick="enterEffect('ink')">
-      <div class="card-canvas-wrap"><canvas id="prev-ink"></canvas></div>
-      <div class="card-info">
-        <div class="card-title" style="color:var(--accent-ink)">Bleed &amp; Ink</div>
-        <div class="card-desc">Stipple dots and ink bleed with grain</div>
-        <div class="card-cta">Open &rarr;</div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="landing-footer">&copy; MakeReign</div>
 </div>
 
 <!-- WORKSPACE -->
