@@ -17,7 +17,7 @@
 
 /* Header bar */
 .ws-header {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -109,7 +109,7 @@
 
 /* Sidebar */
 .ws-sidebar {
-  width: 360px;
+  width: 400px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
   overflow-y: auto;
@@ -126,7 +126,7 @@
 .ws-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .s-section {
-  padding: 22px 20px 18px;
+  padding: 48px 48px 48px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -144,8 +144,8 @@
 .s-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 24px;
+  margin-bottom: 24px;
 }
 
 .s-row:last-child { margin-bottom: 0; }
@@ -369,8 +369,8 @@
 /* ── Animation: left flyout panel ───────────────────────────────── */
 .anim-panel {
   position: fixed;
-  top: 72px;                 /* just below the 64px header */
-  left: 368px;               /* just right of the 360px sidebar */
+  top: 88px;                 /* just below the 80px header */
+  left: 408px;               /* just right of the 400px sidebar */
   bottom: 16px;
   width: 300px;
   z-index: 40;
