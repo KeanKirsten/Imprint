@@ -72,9 +72,11 @@ function buildColumns(columnsEl: HTMLElement): void {
   labels = [];
   colEls = [];
   hovered = null;
+  scrollOffset = 0;
   hideCard();
 
-  const rowCount = Math.ceil(window.innerHeight / ROW_H) + LABELS.length * 2;
+  // Extra rows: enough to fill viewport + one full marquee cycle with padding
+  const rowCount = Math.ceil((window.innerHeight + CYCLE_H) / ROW_H) + LABELS.length;
 
   for (let col = 0; col < COLS; col++) {
     const colEl = document.createElement('div');
