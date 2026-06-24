@@ -58,7 +58,7 @@ export function toggleAdvanced(): void {
   const adv    = document.getElementById('ws-advanced')        as HTMLElement;
   const toggle = document.getElementById('ws-advanced-toggle') as HTMLElement;
   const open   = adv.classList.toggle('expanded');
-  toggle.textContent = open ? 'Advanced ∧' : 'Advanced ∨';
+  toggle.textContent = open ? 'Advanced ⌃' : 'Advanced ⌄';
   toggle.classList.toggle('open', open);
 }
 

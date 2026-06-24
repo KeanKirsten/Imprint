@@ -102,7 +102,7 @@
 /* ── Floating panel ─────────────────────────────────────────────── */
 .ws-panel {
   position: fixed;
-  width: 340px;
+  width: 360px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
   background: var(--bg);
@@ -146,7 +146,7 @@
 /* Snap states */
 .ws-panel.snap-left,
 .ws-panel.snap-right {
-  width: 400px;
+  width: 380px;
   top: 80px;
   bottom: 0;
   max-height: none;
@@ -205,8 +205,22 @@
 
 /* Quick Adjust macro section */
 .ws-macro-section {
-  padding: 24px 24px 8px;
+  padding: 20px 20px 8px;
   border-bottom: 1px solid var(--border);
+}
+
+/* Compact row layout inside the panel */
+.ws-macro-section .s-row {
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ws-macro-section .s-row-lbl {
+  width: 72px;
+}
+
+.ws-macro-section .s-val {
+  width: 32px;
 }
 
 /* Advanced toggle */
