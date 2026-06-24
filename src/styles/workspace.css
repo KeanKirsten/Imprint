@@ -354,10 +354,10 @@
   flex: 0 0 auto;
   width: 24px; height: 24px;
   margin-left: 8px;
-  border: 1px solid var(--line, #d8dad8);
+  border: 1px solid var(--border-hi, #b4b6b4);
   border-radius: 50%;
   background: transparent;
-  color: var(--muted, #888);
+  color: var(--text, #0e0e0f);
   font-size: 12px;
   line-height: 1;
   cursor: pointer;
