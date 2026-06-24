@@ -24,7 +24,7 @@ const PULL      = 0.7;  // how far the nearest label reaches toward the cursor (
 const STIFFNESS = 0.08; // spring pull toward target (lower = lazier, more "attraction")
 const DAMPING   = 0.82; // velocity damping (higher = less bounce)
 
-const MARQUEE_SPEED = 0.25;
+const MARQUEE_SPEED = 0.08;
 const EMPHASIS      = 0.14;
 const CYCLE_H       = LABELS.length * ROW_H;
 
