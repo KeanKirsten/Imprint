@@ -25,13 +25,16 @@ html, body {
 }
 
 :root {
-  --bg:               #0a0a0a;
-  --surface:          #111111;
-  --surface-2:        #1a1a1a;
-  --border:           #222222;
-  --border-hi:        #383838;
-  --text:             #e0e0e0;
-  --muted:            #555;
+  --bg:               #eef0ee;
+  --surface:          #e6e8e6;
+  --surface-2:        #dddedd;
+  --border:           #d8dad8;
+  --border-hi:        #b4b6b4;
+  --text:             #0e0e0f;
+  --muted:            #888888;
+  --panel:            #eef0ee;
+  --line:             #d8dad8;
+  --fg:               #0e0e0f;
   --accent-corpus:    #c8a05a;
   --accent-halftone:  #e03d6a;
   --accent-ink:       #62b0c8;
@@ -42,12 +45,12 @@ html, body {
   height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Lay Grotesk Trial', sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Buttons shared across landing and workspace */
 button {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Lay Grotesk Trial', sans-serif;
 }
