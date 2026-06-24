@@ -99,31 +99,180 @@
   pointer-events: none;
 }
 
+/* ── Floating panel ─────────────────────────────────────────────── */
+.ws-panel {
+  position: fixed;
+  width: 340px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ws-panel.panel-visible { display: flex; }
+
+.ws-panel::-webkit-scrollbar { width: 3px; }
+.ws-panel::-webkit-scrollbar-track { background: transparent; }
+.ws-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.ws-panel-handle {
+  height: 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  cursor: grab;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-panel-handle::after {
+  content: '';
+  width: 32px;
+  height: 3px;
+  background: var(--border-hi);
+  border-radius: 2px;
+}
+
+.ws-panel-handle:active { cursor: grabbing; }
+
+/* Snap states */
+.ws-panel.snap-left,
+.ws-panel.snap-right {
+  width: 400px;
+  top: 80px;
+  bottom: 0;
+  max-height: none;
+  border-radius: 0;
+  overflow-y: auto;
+}
+
+.ws-panel.snap-left  { left: 0; right: auto; border-left: none; border-radius: 0 8px 8px 0; }
+.ws-panel.snap-right { right: 0; left: auto; border-right: none; border-radius: 8px 0 0 8px; }
+
+.ws-panel.snap-top,
+.ws-panel.snap-bottom {
+  width: 100%;
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  border-radius: 0;
+  overflow-y: auto;
+}
+
+.ws-panel.snap-top    { top: 80px; bottom: auto; border-top: none; }
+.ws-panel.snap-bottom { bottom: 0; top: auto; border-bottom: none; }
+
+/* Upload button */
+.ws-panel-upload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  padding: 16px 24px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.ws-panel-upload:hover { background: var(--surface); }
+
+/* Preset row — spec 2 */
+.preset-row {
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 0;
+}
+
+.preset-row:empty { display: none; }
+
+/* Quick Adjust macro section */
+.ws-macro-section {
+  padding: 24px 24px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Advanced toggle */
+.ws-advanced-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  padding: 14px 24px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.12s, background 0.12s;
+}
+
+.ws-advanced-toggle:hover { color: var(--text); background: var(--surface); }
+.ws-advanced-toggle.open  { color: var(--text); }
+
+/* Advanced collapsible section */
+.ws-advanced {
+  display: none;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+}
+
+.ws-advanced.expanded { display: flex; }
+
+/* Sidebar content blocks inside advanced */
+.ws-advanced .ws-sidebar {
+  display: none;
+  flex-direction: column;
+}
+
+.ws-advanced .ws-sidebar.active { display: flex; }
+
+/* Export actions */
+.ws-panel-actions {
+  display: flex;
+  gap: 8px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ws-panel-actions .ws-btn { flex: 1; }
+
+/* Timeline button inside panel */
+#ws-panel #anim-toggle {
+  width: 100%;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  padding: 14px 24px;
+}
+
 /* Body layout */
 .ws-body {
   flex: 1;
   display: flex;
   overflow: hidden;
   min-height: 0;
+  position: relative;
 }
-
-/* Sidebar */
-.ws-sidebar {
-  width: 400px;
-  flex-shrink: 0;
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--bg);
-  display: none;
-  flex-direction: column;
-}
-
-.ws-sidebar.active { display: flex; }
-
-.ws-sidebar::-webkit-scrollbar { width: 3px; }
-.ws-sidebar::-webkit-scrollbar-track { background: transparent; }
-.ws-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .s-section {
   padding: 48px 48px 48px;
