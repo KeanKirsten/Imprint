@@ -136,9 +136,8 @@
 
 /* Click → workspace: the clicked word pops as the landing fades */
 .lp-label.leaving {
-  transform: scale(1.4) !important;
-  opacity: 0 !important;
-  transition: transform 0.35s ease, opacity 0.35s ease !important;
+  transform: scale(1.15) !important;
+  transition: transform 0.45s ease !important;
 }
 
 .lp-card::after {
