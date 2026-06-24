@@ -4,6 +4,8 @@ import { renderCorpus } from '../effects/corpus/renderer';
 import { renderHalftone } from '../effects/halftone/renderer';
 import { renderBleedInk } from '../effects/ink/renderer';
 import type { Effect } from '../types';
+import { initPanel } from './panel';
+import { showMacroSection } from './macros';
 
 /**
  * Transition from the landing to the workspace for the given effect.
@@ -22,9 +24,15 @@ export function enterEffect(effect: Effect): void {
   badge.textContent = badgeNames[effect];
   badge.setAttribute('data-effect', effect);
 
+  // Show correct macro section and make panel visible
+  showMacroSection(effect);
+  const panel = document.getElementById('ws-panel') as HTMLElement;
+  panel.classList.add('panel-visible');
+
+  // Toggle active sidebar within advanced section
   (['corpus', 'halftone', 'ink'] as Effect[]).forEach(e => {
-    const sb = document.getElementById(`sidebar-${e}`) as HTMLElement;
-    sb.classList.toggle('active', e === effect);
+    const sb = document.getElementById(`sidebar-${e}`);
+    if (sb) sb.classList.toggle('active', e === effect);
   });
 
   const ws = document.getElementById('view-workspace') as HTMLElement;
@@ -46,6 +54,14 @@ export function enterEffect(effect: Effect): void {
  * Return from the workspace to the landing view.
  * Exposed on window.
  */
+export function toggleAdvanced(): void {
+  const adv    = document.getElementById('ws-advanced')        as HTMLElement;
+  const toggle = document.getElementById('ws-advanced-toggle') as HTMLElement;
+  const open   = adv.classList.toggle('expanded');
+  toggle.textContent = open ? 'Advanced ∧' : 'Advanced ∨';
+  toggle.classList.toggle('open', open);
+}
+
 export function goToLanding(): void {
   const ws = document.getElementById('view-workspace') as HTMLElement;
   const ld = document.getElementById('view-landing')   as HTMLElement;
@@ -118,4 +134,5 @@ export function initWorkspace(): void {
   const ws = document.getElementById('view-workspace') as HTMLElement;
   ws.style.display = 'none';
   mainCanvas.style.display = 'none';
+  initPanel();
 }

@@ -16,7 +16,11 @@ import {
   scheduleRender,
   exportImg,
   initWorkspace,
+  toggleAdvanced,
 } from './workspace/index';
+
+// Macros
+import { onMacro } from './workspace/macros';
 
 // File upload / drag-drop
 import {
@@ -93,6 +97,8 @@ window.toggleHalftoneInfluence = toggleHalftoneInfluence;
 window.clearHalftoneInfluence  = clearHalftoneInfluence;
 window.setInkMode          = setInkMode;
 window.toggleAnimPanel = togglePanel;
+(window as any).onMacro        = onMacro;
+(window as any).toggleAdvanced = toggleAdvanced;
 
 // Initialise
 initWorkspace();
