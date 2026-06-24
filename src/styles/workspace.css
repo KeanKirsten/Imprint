@@ -33,7 +33,7 @@
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   padding: 5px 11px;
   border-radius: 3px;
@@ -49,7 +49,7 @@
 }
 
 .ws-effect-badge {
-  font-size: 10px;
+  font-size: 16px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   padding: 4px 10px;
@@ -68,7 +68,7 @@
   border: 1px solid var(--border);
   color: var(--text);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   padding: 6px 14px;
   border-radius: 3px;
@@ -134,7 +134,7 @@
 
 .s-label {
   display: block;
-  font-size: 10px;
+  font-size: 16px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -151,9 +151,9 @@
 .s-row:last-child { margin-bottom: 0; }
 
 .s-row-lbl {
-  font-size: 12px;
+  font-size: 16px;
   color: var(--muted);
-  width: 68px;
+  width: 80px;
   flex-shrink: 0;
   letter-spacing: 0.02em;
 }
@@ -178,9 +178,9 @@
 }
 
 .s-val {
-  font-size: 12px;
+  font-size: 16px;
   color: var(--muted);
-  width: 42px;
+  width: 48px;
   text-align: right;
   flex-shrink: 0;
 }
@@ -198,7 +198,7 @@
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 11px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   padding: 5px 9px;
   border-radius: 3px;
@@ -221,9 +221,9 @@
 .s-color-row:last-child { margin-bottom: 0; }
 
 .s-color-lbl {
-  font-size: 12px;
+  font-size: 16px;
   color: var(--muted);
-  width: 72px;
+  width: 80px;
   flex-shrink: 0;
   letter-spacing: 0.02em;
 }
@@ -247,7 +247,7 @@
   border-radius: 4px;
   color: var(--text);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   padding: 8px;
   resize: vertical;
   min-height: 55px;
@@ -266,7 +266,7 @@
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 11px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   padding: 7px;
   border-radius: 3px;
@@ -329,14 +329,14 @@
 .dz-cross::after  { width: 100%; height: 2px; top: calc(50% - 1px); left: 0; }
 
 .dz-text {
-  font-size: 11px;
+  font-size: 16px;
   letter-spacing: 0.14em;
   color: var(--muted);
   text-transform: uppercase;
 }
 
 .dz-sub {
-  font-size: 10px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   color: var(--muted);
   text-transform: uppercase;
@@ -397,17 +397,17 @@
   border: 1px solid var(--line, #d8dad8);
   background: transparent;
   color: var(--fg, #0e0e0f);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   cursor: pointer;
 }
 .anim-transport button:hover:not(:disabled) { border-color: #d4ff00; color: #d4ff00; }
 .anim-transport button:disabled { opacity: 0.5; cursor: default; }
-.anim-dur, .anim-fps { font-size: 11px; color: var(--muted, #888); letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
-.anim-dur input { width: 48px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 12px; padding: 3px 5px; }
+.anim-dur, .anim-fps { font-size: 16px; color: var(--muted, #888); letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
+.anim-dur input { width: 48px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 16px; padding: 3px 5px; }
 
 .anim-tracks { display: flex; flex-direction: column; gap: 12px; }
-.anim-empty { font-size: 11px; color: var(--muted, #888); letter-spacing: 0.04em; padding: 6px 0; line-height: 1.5; }
+.anim-empty { font-size: 16px; color: var(--muted, #888); letter-spacing: 0.04em; padding: 6px 0; line-height: 1.5; }
 .anim-track {
   border: 1px solid var(--line, #d8dad8);
   padding: 10px;
@@ -415,18 +415,18 @@
   display: flex; flex-direction: column; gap: 8px;
 }
 .anim-track-head { display: flex; align-items: center; justify-content: space-between; }
-.anim-track-name { font-size: 12px; color: var(--fg, #0e0e0f); letter-spacing: 0.04em; }
-.anim-track-rm { background: transparent; border: none; color: var(--muted, #888); cursor: pointer; font-size: 12px; }
+.anim-track-name { font-size: 16px; color: var(--fg, #0e0e0f); letter-spacing: 0.04em; }
+.anim-track-rm { background: transparent; border: none; color: var(--muted, #888); cursor: pointer; font-size: 16px; }
 .anim-track-rm:hover { color: #e03d6a; }
 .anim-track-fields { display: flex; gap: 8px; }
-.anim-numfield { font-size: 11px; color: var(--muted, #888); display: flex; align-items: center; gap: 4px; }
-.anim-numfield input { width: 56px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 12px; padding: 3px 5px; }
+.anim-numfield { font-size: 16px; color: var(--muted, #888); display: flex; align-items: center; gap: 4px; }
+.anim-numfield input { width: 56px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 16px; padding: 3px 5px; }
 
 .anim-curve { display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .anim-curve-canvas { border: 1px solid var(--line, #d8dad8); touch-action: none; cursor: crosshair; }
 .anim-presets { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
 .anim-preset {
-  font-size: 10px; padding: 2px 6px;
+  font-size: 14px; padding: 2px 6px;
   border: 1px solid var(--line, #d8dad8);
   background: transparent; color: var(--muted, #888);
   cursor: pointer; letter-spacing: 0.03em;
