@@ -354,7 +354,7 @@
   flex: 0 0 auto;
   width: 18px; height: 18px;
   margin-left: 6px;
-  border: 1px solid var(--line, #333);
+  border: 1px solid var(--line, #d8dad8);
   border-radius: 50%;
   background: transparent;
   color: var(--muted, #888);
@@ -378,56 +378,56 @@
   gap: 12px;
   overflow-y: auto;
   padding: 14px;
-  border: 1px solid var(--line, #333);
+  border: 1px solid var(--line, #d8dad8);
   border-radius: 4px;
-  background: var(--panel, #141414);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  background: var(--panel, #eef0ee);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
 }
 .anim-panel::-webkit-scrollbar { width: 3px; }
 .anim-panel::-webkit-scrollbar-track { background: transparent; }
-.anim-panel::-webkit-scrollbar-thumb { background: var(--border, #333); border-radius: 2px; }
+.anim-panel::-webkit-scrollbar-thumb { background: var(--border, #d8dad8); border-radius: 2px; }
 .anim-transport {
   display: flex; align-items: center; gap: 10px;
   flex-wrap: wrap;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--line, #333);
+  border-bottom: 1px solid var(--line, #d8dad8);
 }
 .anim-transport button {
   padding: 5px 12px;
-  border: 1px solid var(--line, #333);
+  border: 1px solid var(--line, #d8dad8);
   background: transparent;
-  color: var(--fg, #eee);
-  font-size: 10px;
+  color: var(--fg, #0e0e0f);
+  font-size: 12px;
   letter-spacing: 0.04em;
   cursor: pointer;
 }
 .anim-transport button:hover:not(:disabled) { border-color: #d4ff00; color: #d4ff00; }
 .anim-transport button:disabled { opacity: 0.5; cursor: default; }
-.anim-dur, .anim-fps { font-size: 9px; color: var(--muted, #888); letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
-.anim-dur input { width: 48px; background: transparent; border: 1px solid var(--line, #333); color: var(--fg, #eee); font-size: 10px; padding: 3px 5px; }
+.anim-dur, .anim-fps { font-size: 11px; color: var(--muted, #888); letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px; }
+.anim-dur input { width: 48px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 12px; padding: 3px 5px; }
 
 .anim-tracks { display: flex; flex-direction: column; gap: 12px; }
-.anim-empty { font-size: 9px; color: var(--muted, #888); letter-spacing: 0.04em; padding: 6px 0; line-height: 1.5; }
+.anim-empty { font-size: 11px; color: var(--muted, #888); letter-spacing: 0.04em; padding: 6px 0; line-height: 1.5; }
 .anim-track {
-  border: 1px solid var(--line, #333);
+  border: 1px solid var(--line, #d8dad8);
   padding: 10px;
   width: 100%;
   display: flex; flex-direction: column; gap: 8px;
 }
 .anim-track-head { display: flex; align-items: center; justify-content: space-between; }
-.anim-track-name { font-size: 10px; color: var(--fg, #eee); letter-spacing: 0.04em; }
-.anim-track-rm { background: transparent; border: none; color: var(--muted, #888); cursor: pointer; font-size: 10px; }
+.anim-track-name { font-size: 12px; color: var(--fg, #0e0e0f); letter-spacing: 0.04em; }
+.anim-track-rm { background: transparent; border: none; color: var(--muted, #888); cursor: pointer; font-size: 12px; }
 .anim-track-rm:hover { color: #e03d6a; }
 .anim-track-fields { display: flex; gap: 8px; }
-.anim-numfield { font-size: 9px; color: var(--muted, #888); display: flex; align-items: center; gap: 4px; }
-.anim-numfield input { width: 56px; background: transparent; border: 1px solid var(--line, #333); color: var(--fg, #eee); font-size: 10px; padding: 3px 5px; }
+.anim-numfield { font-size: 11px; color: var(--muted, #888); display: flex; align-items: center; gap: 4px; }
+.anim-numfield input { width: 56px; background: transparent; border: 1px solid var(--line, #d8dad8); color: var(--fg, #0e0e0f); font-size: 12px; padding: 3px 5px; }
 
 .anim-curve { display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.anim-curve-canvas { border: 1px solid var(--line, #333); touch-action: none; cursor: crosshair; }
+.anim-curve-canvas { border: 1px solid var(--line, #d8dad8); touch-action: none; cursor: crosshair; }
 .anim-presets { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
 .anim-preset {
-  font-size: 8px; padding: 2px 6px;
-  border: 1px solid var(--line, #333);
+  font-size: 10px; padding: 2px 6px;
+  border: 1px solid var(--line, #d8dad8);
   background: transparent; color: var(--muted, #888);
   cursor: pointer; letter-spacing: 0.03em;
 }
