@@ -221,11 +221,11 @@
 .s-color-row:last-child { margin-bottom: 0; }
 
 .s-color-lbl {
-  font-size: 8.5px;
+  font-size: 12px;
   color: var(--muted);
-  width: 68px;
+  width: 72px;
   flex-shrink: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 .s-color-row input[type="color"] {
@@ -246,8 +246,8 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 8.5px;
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 12px;
   padding: 8px;
   resize: vertical;
   min-height: 55px;
@@ -321,7 +321,7 @@
 .dz-cross::after {
   content: '';
   position: absolute;
-  background: #282828;
+  background: var(--border);
   border-radius: 1px;
 }
 
@@ -329,16 +329,16 @@
 .dz-cross::after  { width: 100%; height: 2px; top: calc(50% - 1px); left: 0; }
 
 .dz-text {
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  color: #282828;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
   text-transform: uppercase;
 }
 
 .dz-sub {
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  color: #1e1e1e;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
   text-transform: uppercase;
 }
 
