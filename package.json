@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "typescript": "^5.0.0",
-    "vite": "^5.0.0"
+    "vite": "^6.4.3"
   },
   "dependencies": {
     "gifenc": "^1.0.3"
