@@ -70,6 +70,8 @@ export function goToLanding(): void {
   ld.style.opacity = '1';
   ld.style.pointerEvents = 'all';
 
+  document.querySelectorAll('.lp-label.leaving').forEach(el => el.classList.remove('leaving'));
+
   setTimeout(() => {
     ws.style.display = 'none';
     state.landingActive = true;
