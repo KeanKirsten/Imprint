@@ -28,6 +28,7 @@ import {
   triggerUpload,
   onFileInput,
   initUploader,
+  initCompare,
 } from './workspace/uploader';
 
 // Landing parallax
@@ -105,6 +106,7 @@ window.toggleAnimPanel = togglePanel;
 // Initialise
 initWorkspace();
 initUploader();
+initCompare();
 initCorpusSidebar();
 initLanding();
 initAnimation();

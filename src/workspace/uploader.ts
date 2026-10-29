@@ -53,11 +53,54 @@ export function handleFile(file: File): void {
  * Hides the drop zone, shows the canvas, and triggers a render.
  */
 export function onSourceReady(): void {
-  const dropZone = document.getElementById('drop-zone') as HTMLElement;
+  const dropZone   = document.getElementById('drop-zone')    as HTMLElement;
+  const compareBtn = document.getElementById('compare-btn')  as HTMLButtonElement;
   dropZone.classList.add('hidden');
   mainCanvas.style.display = 'block';
+  compareBtn.style.display = '';
   (document.getElementById('export-btn') as HTMLButtonElement).disabled = false;
   scheduleRender();
+}
+
+// Off-screen canvas holding the raw source frame for comparison
+const compareCanvas = document.createElement('canvas');
+
+/** Draw the current source into the compare canvas at the same size as mainCanvas. */
+function captureOriginal(): void {
+  const src = state.currentSource;
+  if (!src) return;
+  compareCanvas.width  = mainCanvas.width;
+  compareCanvas.height = mainCanvas.height;
+  const ctx = compareCanvas.getContext('2d');
+  if (!ctx) return;
+  ctx.drawImage(src as CanvasImageSource, 0, 0, compareCanvas.width, compareCanvas.height);
+}
+
+/** Swap canvas content to the raw source; restore on release. */
+export function initCompare(): void {
+  const btn = document.getElementById('compare-btn') as HTMLButtonElement;
+  let saved: ImageData | null = null;
+
+  btn.addEventListener('mousedown', () => {
+    if (!state.currentSource) return;
+    captureOriginal();
+    const ctx = mainCanvas.getContext('2d');
+    if (!ctx) return;
+    saved = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+    ctx.drawImage(compareCanvas, 0, 0);
+    btn.classList.add('active');
+  });
+
+  const restore = () => {
+    if (!saved) return;
+    const ctx = mainCanvas.getContext('2d');
+    if (ctx) ctx.putImageData(saved, 0, 0);
+    saved = null;
+    btn.classList.remove('active');
+  };
+
+  btn.addEventListener('mouseup',    restore);
+  btn.addEventListener('mouseleave', restore);
 }
 
 /**

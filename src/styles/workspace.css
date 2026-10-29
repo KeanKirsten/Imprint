@@ -485,6 +485,30 @@
   min-width: 0;
 }
 
+/* Compare (hold-to-preview original) button */
+.ws-compare-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.ws-compare-btn:hover { border-color: var(--border-hi); }
+.ws-compare-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
 /* Drop zone */
 .drop-zone {
   position: absolute;
