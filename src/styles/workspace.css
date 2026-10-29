@@ -234,22 +234,8 @@
 
 /* Quick Adjust macro section */
 .ws-macro-section {
-  padding: 20px 20px 8px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border);
-}
-
-/* Compact row layout inside the panel */
-.ws-macro-section .s-row {
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.ws-macro-section .s-row-lbl {
-  width: 72px;
-}
-
-.ws-macro-section .s-val {
-  width: 32px;
 }
 
 /* Advanced toggle */
@@ -318,7 +304,7 @@
 }
 
 .s-section {
-  padding: 48px 48px 48px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -328,11 +314,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
-  letter-spacing: 0.2em;
+  font-size: 13px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   cursor: pointer;
   user-select: none;
 }
@@ -352,16 +338,16 @@
 .s-row {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .s-row:last-child { margin-bottom: 0; }
 
 .s-row-lbl {
-  font-size: 16px;
+  font-size: 13px;
   color: var(--muted);
-  width: 96px;
+  width: 72px;
   flex-shrink: 0;
   letter-spacing: 0.02em;
 }
@@ -386,9 +372,9 @@
 }
 
 .s-val {
-  font-size: 16px;
+  font-size: 13px;
   color: var(--muted);
-  width: 56px;
+  width: 40px;
   text-align: right;
   flex-shrink: 0;
 }
@@ -406,9 +392,9 @@
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'Lay Grotesk Trial', sans-serif;
-  font-size: 16px;
-  letter-spacing: 0.04em;
-  padding: 8px 14px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
   text-transform: uppercase;
