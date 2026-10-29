@@ -17,7 +17,7 @@ export function enterEffect(effect: Effect): void {
 
   const badge = document.getElementById('ws-badge') as HTMLElement;
   const badgeNames: Record<Effect, string> = {
-    corpus:   'Corpus',
+    corpus:   'ASCII',
     halftone: 'Halftone',
     ink:      'Bleed & Ink',
   };
@@ -69,7 +69,7 @@ export function switchEffect(effect: Effect): void {
   state.currentEffect = effect;
 
   const badge = document.getElementById('ws-badge') as HTMLElement;
-  const badgeNames: Record<Effect, string> = { corpus: 'Corpus', halftone: 'Halftone', ink: 'Bleed & Ink' };
+  const badgeNames: Record<Effect, string> = { corpus: 'ASCII', halftone: 'Halftone', ink: 'Bleed & Ink' };
   badge.textContent = badgeNames[effect];
   badge.setAttribute('data-effect', effect);
 
