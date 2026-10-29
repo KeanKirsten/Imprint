@@ -20,6 +20,9 @@ import {
   switchEffect,
 } from './workspace/index';
 
+// SVG export
+import { exportSvg } from './workspace/exportSvg';
+
 // Macros
 import { onMacro } from './workspace/macros';
 
@@ -100,6 +103,7 @@ window.clearHalftoneInfluence  = clearHalftoneInfluence;
 window.setInkMode          = setInkMode;
 window.toggleAnimPanel = togglePanel;
 (window as any).onMacro        = onMacro;
+(window as any).exportSvg      = exportSvg;
 (window as any).toggleAdvanced = toggleAdvanced;
 (window as any).switchEffect   = switchEffect;
 

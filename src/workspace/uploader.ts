@@ -58,7 +58,8 @@ export function onSourceReady(): void {
   dropZone.classList.add('hidden');
   mainCanvas.style.display = 'block';
   compareBtn.style.display = '';
-  (document.getElementById('export-btn') as HTMLButtonElement).disabled = false;
+  (document.getElementById('export-btn')     as HTMLButtonElement).disabled = false;
+  (document.getElementById('export-svg-btn') as HTMLButtonElement).disabled = false;
   scheduleRender();
 }
 
