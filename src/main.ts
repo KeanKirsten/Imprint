@@ -17,6 +17,7 @@ import {
   exportImg,
   initWorkspace,
   toggleAdvanced,
+  switchEffect,
 } from './workspace/index';
 
 // Macros
@@ -99,6 +100,7 @@ window.setInkMode          = setInkMode;
 window.toggleAnimPanel = togglePanel;
 (window as any).onMacro        = onMacro;
 (window as any).toggleAdvanced = toggleAdvanced;
+(window as any).switchEffect   = switchEffect;
 
 // Initialise
 initWorkspace();

@@ -21,6 +21,8 @@
 
   <div class="lp-columns" id="lp-columns"></div>
 
+  <div class="lp-upload-hint" id="lp-upload-hint">Drop image to start</div>
+
   <div class="lp-card" id="lp-card" aria-hidden="true">
     <div class="lp-card-img" id="lp-card-img"></div>
     <div class="lp-card-bottom">
@@ -48,6 +50,13 @@
     <!-- Floating control panel -->
     <div class="ws-panel" id="ws-panel">
       <div class="ws-panel-handle" id="ws-panel-handle"></div>
+
+      <!-- Effect tabs -->
+      <div class="ws-effect-tabs" id="ws-effect-tabs">
+        <button class="ws-tab active" data-effect="corpus"   onclick="switchEffect('corpus')">Corpus</button>
+        <button class="ws-tab"        data-effect="halftone" onclick="switchEffect('halftone')">Halftone</button>
+        <button class="ws-tab"        data-effect="ink"      onclick="switchEffect('ink')">Bleed &amp; Ink</button>
+      </div>
 
       <!-- Upload -->
       <button class="ws-panel-upload" onclick="triggerUpload()">&oplus; Add footage</button>

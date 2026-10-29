@@ -1,4 +1,6 @@
 import { enterEffect } from '../workspace/index';
+import { handleFile } from '../workspace/uploader';
+import { state } from '../state';
 import type { Effect } from '../types';
 
 interface LabelDef { text: string; effect: Effect; tag: string; img: string; }
@@ -64,6 +66,27 @@ export function initLanding(): void {
     loopStarted = true;
     requestAnimationFrame(springLoop);
   }
+
+  // Landing drag-and-drop: drop an image to jump straight into the workspace
+  const landingEl = document.getElementById('view-landing') as HTMLElement;
+  landingEl.addEventListener('dragover', (e: DragEvent) => {
+    e.preventDefault();
+    landingEl.classList.add('drag-over');
+  });
+  landingEl.addEventListener('dragleave', (e: DragEvent) => {
+    if (!landingEl.contains(e.relatedTarget as Node)) {
+      landingEl.classList.remove('drag-over');
+    }
+  });
+  landingEl.addEventListener('drop', (e: DragEvent) => {
+    e.preventDefault();
+    landingEl.classList.remove('drag-over');
+    const f = e.dataTransfer?.files[0];
+    if (!f) return;
+    const effect: Effect = state.currentEffect ?? 'corpus';
+    enterEffect(effect);
+    handleFile(f);
+  });
 }
 
 function buildColumns(columnsEl: HTMLElement): void {

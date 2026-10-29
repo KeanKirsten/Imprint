@@ -62,6 +62,31 @@ export function toggleAdvanced(): void {
   toggle.classList.toggle('open', open);
 }
 
+/**
+ * Switch active effect without leaving the workspace.
+ */
+export function switchEffect(effect: Effect): void {
+  state.currentEffect = effect;
+
+  const badge = document.getElementById('ws-badge') as HTMLElement;
+  const badgeNames: Record<Effect, string> = { corpus: 'Corpus', halftone: 'Halftone', ink: 'Bleed & Ink' };
+  badge.textContent = badgeNames[effect];
+  badge.setAttribute('data-effect', effect);
+
+  showMacroSection(effect);
+
+  (['corpus', 'halftone', 'ink'] as Effect[]).forEach(e => {
+    const sb = document.getElementById(`sidebar-${e}`);
+    if (sb) sb.classList.toggle('active', e === effect);
+  });
+
+  document.querySelectorAll<HTMLElement>('.ws-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.effect === effect);
+  });
+
+  if (state.currentSource) scheduleRender();
+}
+
 export function goToLanding(): void {
   const ws = document.getElementById('view-workspace') as HTMLElement;
   const ld = document.getElementById('view-landing')   as HTMLElement;
@@ -140,4 +165,11 @@ export function initWorkspace(): void {
   ws.style.display = 'none';
   mainCanvas.style.display = 'none';
   initPanel();
+
+  // Accordion: clicking any section label collapses/expands that section
+  document.querySelectorAll('.ws-advanced .s-section .s-label').forEach(label => {
+    label.addEventListener('click', () => {
+      (label.parentElement as HTMLElement).classList.toggle('collapsed');
+    });
+  });
 }

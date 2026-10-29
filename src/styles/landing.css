@@ -134,6 +134,27 @@
   100% { transform: scale(1.08) translate(-1px, 2px); }
 }
 
+/* Upload hint */
+.lp-upload-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0e0e0f;
+  opacity: 0.28;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+#view-landing.drag-over .lp-columns { opacity: 0.3; transition: opacity 0.15s; }
+#view-landing.drag-over .lp-upload-hint { opacity: 0.9; }
+
 /* Click → workspace: the clicked word pops as the landing fades */
 .lp-label.leaving {
   transform: scale(1.15) !important;

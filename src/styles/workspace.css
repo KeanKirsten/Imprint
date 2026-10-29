@@ -170,6 +170,35 @@
 .ws-panel.snap-top    { top: 80px; bottom: auto; border-top: none; }
 .ws-panel.snap-bottom { bottom: 0; top: auto; border-bottom: none; }
 
+/* Effect switcher tabs */
+.ws-effect-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ws-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Lay Grotesk Trial', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.ws-tab:last-child { border-right: none; }
+.ws-tab:hover { background: var(--surface); color: var(--text); }
+
+.ws-tab.active[data-effect="corpus"]   { color: var(--accent-corpus);   background: var(--surface); }
+.ws-tab.active[data-effect="halftone"] { color: var(--accent-halftone); background: var(--surface); }
+.ws-tab.active[data-effect="ink"]      { color: var(--accent-ink);      background: var(--surface); }
+
 /* Upload button */
 .ws-panel-upload {
   display: flex;
@@ -296,13 +325,29 @@
 .s-section:last-child { border-bottom: none; }
 
 .s-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 16px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 18px;
+  cursor: pointer;
+  user-select: none;
 }
+
+.s-label::after {
+  content: '⌄';
+  font-size: 13px;
+  opacity: 0.5;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.s-section.collapsed .s-label::after { transform: rotate(-90deg); }
+
+.s-section.collapsed > :not(.s-label) { display: none !important; }
 
 .s-row {
   display: flex;
