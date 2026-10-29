@@ -80,6 +80,9 @@ export const state = {
     ink:      { durationMs: 3000, fps: 30, sliders: [] },
   } as Record<'corpus' | 'halftone' | 'ink', EffectAnimation>,
 
+  // Whether an export is in progress (suppresses background fill for transparency)
+  exportingTransparent: false,
+
   // Whether the timeline panel is open
   animPanelOpen: false,
 

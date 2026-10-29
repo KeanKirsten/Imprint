@@ -57,8 +57,10 @@ function renderStipple(
   const scatter = parseFloat((document.getElementById('i-scatter') as HTMLInputElement).value);
   const grain   = parseInt((document.getElementById('i-sgrain') as HTMLInputElement).value) / 100;
 
-  ctx.fillStyle = paperHex;
-  ctx.fillRect(0, 0, W, H);
+  if (!state.exportingTransparent) {
+    ctx.fillStyle = paperHex;
+    ctx.fillRect(0, 0, W, H);
+  }
   ctx.fillStyle = inkHex;
 
   const thr = threshold / 255;
@@ -128,7 +130,7 @@ function renderBleed(
       resolve();
     };
     worker.postMessage(
-      { srcBuffer, width: W, height: H, threshold, bleedAmt, spread, grain, spatter, inkR: iR, inkG: iG, inkB: iB, paperR: pR, paperG: pG, paperB: pB },
+      { srcBuffer, width: W, height: H, threshold, bleedAmt, spread, grain, spatter, inkR: iR, inkG: iG, inkB: iB, paperR: pR, paperG: pG, paperB: pB, transparent: state.exportingTransparent },
       [srcBuffer]
     );
   });

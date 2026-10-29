@@ -24,6 +24,7 @@ interface InkWorkerMessage {
   paperR: number;
   paperG: number;
   paperB: number;
+  transparent?: boolean;
 }
 
 // Inline noise function (cannot import from utils in a worker)
@@ -37,6 +38,7 @@ self.onmessage = (e: MessageEvent<InkWorkerMessage>) => {
     srcBuffer, width: W, height: H,
     threshold, bleedAmt, spread, grain, spatter,
     inkR, inkG, inkB, paperR, paperG, paperB,
+    transparent = false,
   } = e.data;
 
   const src = new Uint8ClampedArray(srcBuffer);
@@ -117,12 +119,15 @@ self.onmessage = (e: MessageEvent<InkWorkerMessage>) => {
       result[di]     = inkR;
       result[di + 1] = inkG;
       result[di + 2] = inkB;
+      result[di + 3] = 255;
+    } else if (transparent) {
+      result[di + 3] = 0;
     } else {
       result[di]     = paperR;
       result[di + 1] = paperG;
       result[di + 2] = paperB;
+      result[di + 3] = 255;
     }
-    result[di + 3] = 255;
   }
 
   // Transfer the buffer back to the main thread without copying

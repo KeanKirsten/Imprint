@@ -43,8 +43,10 @@ export function renderCorpus(): void {
   mainCanvas.height = dispH;
   const ctx = mainCtx;
 
-  ctx.fillStyle = bgHex;
-  ctx.fillRect(0, 0, dispW, dispH);
+  if (!state.exportingTransparent) {
+    ctx.fillStyle = bgHex;
+    ctx.fillRect(0, 0, dispW, dispH);
+  }
   ctx.font = `${fontSize}px 'DM Mono',monospace`;
   ctx.textBaseline = 'top';
 

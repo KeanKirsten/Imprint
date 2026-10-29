@@ -150,11 +150,16 @@ export function renderFrameAsync(): Promise<void> {
  * Exposed on window.
  */
 export function exportImg(): void {
-  if (!state.currentSource) return;
-  const a = document.createElement('a');
-  a.download = `imprint-${state.currentEffect ?? 'export'}-${Date.now()}.png`;
-  a.href = mainCanvas.toDataURL('image/png');
-  a.click();
+  if (!state.currentSource || !state.currentEffect) return;
+  state.exportingTransparent = true;
+  void doRender().then(() => {
+    state.exportingTransparent = false;
+    const a = document.createElement('a');
+    a.download = `imprint-${state.currentEffect ?? 'export'}-${Date.now()}.png`;
+    a.href = mainCanvas.toDataURL('image/png');
+    a.click();
+    scheduleRender();
+  });
 }
 
 /**

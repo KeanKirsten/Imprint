@@ -120,8 +120,10 @@ export function renderHalftone(): void {
   const params: PassParams = { spacing, minSize, maxSize, scatter, bgHex, colA, colB };
 
   if (state.halftoneColorMode === 'cmyk') {
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, dispW, dispH);
+    if (!state.exportingTransparent) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, dispW, dispH);
+    }
 
     const cmykPasses: Array<{ color: string; offset: number }> = [
       { color: '#00ffff', offset: 15 },
@@ -136,8 +138,10 @@ export function renderHalftone(): void {
     }
     ctx.globalCompositeOperation = 'source-over';
   } else {
-    ctx.fillStyle = bgHex;
-    ctx.fillRect(0, 0, dispW, dispH);
+    if (!state.exportingTransparent) {
+      ctx.fillStyle = bgHex;
+      ctx.fillRect(0, 0, dispW, dispH);
+    }
     renderHalftonePass(ctx, pixels, dispW, dispH, params, angle, null);
   }
 
