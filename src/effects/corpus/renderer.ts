@@ -9,6 +9,12 @@ import { hashNoise } from '../../utils/noise';
  * a text character sized/coloured accordingly.
  */
 export function renderCorpus(): void {
+  const fontSpec = "500 16px 'Suisse Intl Trial'";
+  if (!document.fonts.check(fontSpec)) {
+    document.fonts.load(fontSpec).then(() => renderCorpus());
+    return;
+  }
+
   const { dispW, dispH } = getDispSize();
   const fontSize  = parseInt((document.getElementById('c-size') as HTMLInputElement).value);
   const threshold = parseInt((document.getElementById('c-threshold') as HTMLInputElement).value);

@@ -107,6 +107,9 @@ window.toggleAnimPanel = togglePanel;
 (window as any).toggleAdvanced = toggleAdvanced;
 (window as any).switchEffect   = switchEffect;
 
+// Preload Suisse Intl Trial so canvas has it ready before first render
+document.fonts.load("500 16px 'Suisse Intl Trial'");
+
 // Initialise
 initWorkspace();
 initUploader();

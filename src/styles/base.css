@@ -14,7 +14,7 @@
 }
 @font-face {
   font-family: 'Suisse Intl Trial';
-  src: url('/fonts/SuisseIntlTrial-Medium.woff2') format('woff2');
+  src: url('/fonts/SuisseIntlTrial-Medium.otf') format('opentype');
   font-weight: 500;
   font-display: swap;
 }

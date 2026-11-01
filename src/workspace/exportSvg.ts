@@ -3,6 +3,30 @@ import { getDispSize, drawToOff, mainCanvas } from '../utils/canvas';
 import { hexToRgb, isDarkColor } from '../utils/color';
 import { hashNoise } from '../utils/noise';
 
+let cachedFontB64: string | null = null;
+
+async function getFontB64(): Promise<string> {
+  if (cachedFontB64) return cachedFontB64;
+  const res = await fetch('/fonts/SuisseIntlTrial-Medium.otf');
+  const buf = await res.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  cachedFontB64 = btoa(bin);
+  return cachedFontB64;
+}
+
+function fontFaceBlock(b64: string): string {
+  return `<style>
+@font-face {
+  font-family: 'Suisse Intl Trial';
+  src: url('data:font/opentype;base64,${b64}') format('opentype');
+  font-weight: 500;
+}
+text { font-family: 'Suisse Intl Trial', sans-serif; font-weight: 500; }
+</style>`;
+}
+
 function dl(svg: string, effect: string): void {
   const blob = new Blob([svg], { type: 'image/svg+xml' });
   const a = document.createElement('a');
@@ -17,14 +41,14 @@ function esc(ch: string): string {
 
 export function exportSvg(): void {
   if (!state.currentSource || !state.currentEffect) return;
-  if (state.currentEffect === 'corpus')   corpusSvg();
+  if (state.currentEffect === 'corpus')   void corpusSvg();
   else if (state.currentEffect === 'halftone') halftoneSvg();
   else inkSvg();
 }
 
 // ─── Corpus ─────────────────────────────────────────────────────────────────
 
-function corpusSvg(): void {
+async function corpusSvg(): Promise<void> {
   const { dispW, dispH } = getDispSize();
   const fontSize  = parseInt((document.getElementById('c-size')      as HTMLInputElement).value);
   const threshold = parseInt((document.getElementById('c-threshold') as HTMLInputElement).value);
@@ -109,8 +133,10 @@ function corpusSvg(): void {
     }
   }
 
+  const b64 = await getFontB64();
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${dispH}" viewBox="0 0 ${dispW} ${dispH}">
-<style>text { font-family: 'Suisse Intl Trial', sans-serif; font-weight: 500; font-size: ${fontSize}px; }</style>
+${fontFaceBlock(b64)}
+<style>text { font-size: ${fontSize}px; }</style>
 ${parts.join('\n')}
 </svg>`;
 
