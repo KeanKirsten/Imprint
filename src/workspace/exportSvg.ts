@@ -53,7 +53,9 @@ function corpusSvg(): void {
     chars = PRESETS[charSet].split('');
   }
 
-  const charW = fontSize * 0.58;
+  const measCtx = document.createElement('canvas').getContext('2d')!;
+  measCtx.font = `500 ${fontSize}px 'Suisse Intl Trial', sans-serif`;
+  const charW = measCtx.measureText('M').width;
   const charH = fontSize;
   const dark  = isDarkColor(bgHex);
   const rgbA  = hexToRgb(colA);
@@ -108,7 +110,7 @@ function corpusSvg(): void {
   }
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${dispH}" viewBox="0 0 ${dispW} ${dispH}">
-<style>text { font-family: 'DM Mono', monospace; font-size: ${fontSize}px; }</style>
+<style>text { font-family: 'Suisse Intl Trial', sans-serif; font-weight: 500; font-size: ${fontSize}px; }</style>
 ${parts.join('\n')}
 </svg>`;
 

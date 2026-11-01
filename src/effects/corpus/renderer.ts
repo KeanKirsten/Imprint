@@ -47,10 +47,10 @@ export function renderCorpus(): void {
     ctx.fillStyle = bgHex;
     ctx.fillRect(0, 0, dispW, dispH);
   }
-  ctx.font = `${fontSize}px 'DM Mono',monospace`;
+  ctx.font = `500 ${fontSize}px 'Suisse Intl Trial', sans-serif`;
   ctx.textBaseline = 'top';
 
-  const charW = fontSize * 0.58;
+  const charW = ctx.measureText('M').width;
   const charH = fontSize;
   const dark  = isDarkColor(bgHex);
 

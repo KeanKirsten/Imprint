@@ -12,6 +12,12 @@
   font-weight: 500;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Suisse Intl Trial';
+  src: url('/fonts/SuisseIntlTrial-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
 
 html, body {
   overflow: hidden;
