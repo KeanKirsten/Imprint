@@ -21,9 +21,10 @@ function fontFaceBlock(b64: string): string {
 @font-face {
   font-family: 'Suisse Intl Trial';
   src: url('data:font/opentype;base64,${b64}') format('opentype');
-  font-weight: 500;
+  font-weight: normal;
+  font-style: normal;
 }
-text { font-family: 'Suisse Intl Trial', sans-serif; font-weight: 500; }
+text { font-family: 'Suisse Intl Trial', sans-serif; font-weight: normal; font-style: normal; }
 </style>`;
 }
 

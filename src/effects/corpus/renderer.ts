@@ -8,10 +8,14 @@ import { hashNoise } from '../../utils/noise';
  * Each character cell samples luminance from the source image and draws
  * a text character sized/coloured accordingly.
  */
+let _fontReady = false;
+
 export function renderCorpus(): void {
-  const fontSpec = "500 16px 'Suisse Intl Trial'";
-  if (!document.fonts.check(fontSpec)) {
-    document.fonts.load(fontSpec).then(() => renderCorpus());
+  if (!_fontReady) {
+    document.fonts.load("16px 'Suisse Intl Trial'").then(loaded => {
+      _fontReady = loaded.length > 0;
+      renderCorpus();
+    });
     return;
   }
 
@@ -53,7 +57,7 @@ export function renderCorpus(): void {
     ctx.fillStyle = bgHex;
     ctx.fillRect(0, 0, dispW, dispH);
   }
-  ctx.font = `500 ${fontSize}px 'Suisse Intl Trial', sans-serif`;
+  ctx.font = `normal normal normal ${fontSize}px 'Suisse Intl Trial', sans-serif`;
   ctx.textBaseline = 'top';
 
   const charW = ctx.measureText('M').width;
